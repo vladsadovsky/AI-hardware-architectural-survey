@@ -356,3 +356,11 @@ D. Comparative Product Tables
 E. Historical Timeline
 
 F. Annotated Bibliography
+
+------------------------------------------------------------------------
+
+# References
+
+-   Consolidated paper-level reference list
+-   Organized by chapter for authoring and review
+-   Sources used by multiple chapters retained as one canonical entry

@@ -151,7 +151,8 @@ Every substantive chapter must cover hyperscale/datacenter, enterprise/edge infr
 - `PROJECT.md` — governing collaboration and repository workflow instructions
 - `chapters/preface.md` — approved Preface; canonical unless subsequently revised
 - `chapters/ch01-historical-context.md` — revised full Chapter 1 draft awaiting review; approved tables are included and five approved figures remain placeholders
-- `figures/` and `references/` — currently empty
+- `figures/` — currently empty
+- `references/references.md` — consolidated paper-level reference list, organized by chapter and intended for placement at the end of the assembled paper
 - `discussions/thread_bukatin-sparse-matrix-gpu-shared_2026-07-15.md` — supporting technical discussion, not governing methodology
 
 ## Open Work

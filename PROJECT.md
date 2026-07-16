@@ -83,6 +83,8 @@ Utilization is not an isolated objective. Treat it as a means to improve useful 
 - Qualify vendor benchmarks and disclose their measurement boundaries.
 - Verify current products, specifications, roadmaps, and other time-sensitive facts before using them.
 - Record citations close to the claims they support.
+- Keep the complete reference list in `references/references.md`, placed at the end of the assembled paper rather than at the end of individual chapters.
+- Organize the consolidated reference list by chapter. Keep only one canonical entry for a source used in multiple chapters.
 - Clearly label uncertainty, conflicts between sources, and missing public evidence.
 
 ## Repository Workflow
