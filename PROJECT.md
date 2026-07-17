@@ -130,5 +130,6 @@ Utilization is not an isolated objective. Treat it as a means to improve useful 
 - Chapter 3 architectural-principles draft awaiting review: `chapters/ch03-fundamental-architectural-principles.md`
 - Chapter 4 architectural-stressors draft awaiting review: `chapters/ch04-architectural-stressors-and-tradeoffs.md`
 - Chapter 5 CPU-and-GPU draft awaiting review: `chapters/ch05-cpus-and-gpus.md`
+- Appendix G economic-primer future-work placeholder: `appendices/appendix-g-economic-primer.md`
 
 Update this section only when the canonical working state materially changes.

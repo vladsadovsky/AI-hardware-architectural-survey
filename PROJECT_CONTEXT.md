@@ -161,6 +161,7 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 - `chapters/ch03-fundamental-architectural-principles.md` — Chapter 3 draft awaiting review; translates workload signatures into execution, data-placement, numerical, scheduling, communication, and software contracts, with four tables and six figure placeholders
 - `chapters/ch04-architectural-stressors-and-tradeoffs.md` — Chapter 4 draft awaiting review; applies explicit scenario-to-response chains to interacting architectural stressors across the compute continuum, with three tables and eight figure placeholders
 - `chapters/ch05-cpus-and-gpus.md` — Chapter 5 draft awaiting review; establishes the CPU–GPU system baseline, explains GPU platform dominance, defines the limits of the GPU efficiency envelope without implying inability, and bridges explicitly to Chapter 6, with five tables and four figure placeholders
+- `appendices/appendix-g-economic-primer.md` — approved future-work placeholder for a plain-language datacenter and mobile acceleration-economics primer; designed after Chapter 6 and finalized after Chapter 10
 - `figures/` — currently empty
 - `references/references.md` — consolidated paper-level reference list, organized by chapter and intended for placement at the end of the assembled paper
 - `discussions/thread_bukatin-sparse-matrix-gpu-shared_2026-07-15.md` — supporting technical discussion, not governing methodology
@@ -173,6 +174,7 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 - Review Chapter 3 for conceptual depth, terminology, separation of architectural abstraction levels, and continuity from the Chapter 2 workload taxonomy.
 - Review Chapter 4 for complete causal chains, treatment of interacting tradeoffs, compute-continuum coverage, and an appropriately gradual lead-in to Chapters 5 and 6.
 - Review Chapter 5 for CPU/GPU balance, accuracy of the platform-level CUDA treatment, economic framing of further specialization, and readiness of its questions to structure Chapter 6.
+- Develop Appendix G after Chapter 6 and finalize it after Chapter 10, preserving its initial datacenter/mobile scope and its distinction among technical feasibility, operational benefit, and economic justification.
 - Review the Preface for consistency and completeness if later manuscript work expands or changes relevant content.
 - Develop later chapters only after the current drafts are reviewed.
 - Create figures, tables, references, and presentation-extraction material as manuscript work produces them; do not let companion artifacts drive manuscript structure.

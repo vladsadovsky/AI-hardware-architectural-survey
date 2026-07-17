@@ -425,6 +425,41 @@ E. Historical Timeline
 
 F. Annotated Bibliography
 
+G. Economic Primer: When AI Acceleration Pays
+
+-   Purpose: prepare system and AI architects to discuss acceleration
+    decisions with business, finance, product, and infrastructure decision
+    makers
+-   Initial scope
+    -   Hyperscale and datacenter AI services
+    -   Mobile AI devices and platforms
+    -   Desktop, workstation, non-mobile edge, and embedded economics deferred
+-   Terminology guardrails
+    -   Latency affects service value, batching freedom, capacity, and SLOs;
+        it is not itself OPEX
+    -   Battery life affects product utility, thermal and component design,
+        feature feasibility, and customer value; it is not itself OPEX
+    -   Distinguish technically possible, operationally beneficial, and
+        economically justified
+-   Common lifecycle model
+    -   Acquisition, design and licensing, software enablement, operations,
+        capacity, reliability, flexibility, support, and risk
+    -   Fixed specialization cost compared with cumulative recurring savings
+        and enabled product or service value
+-   Datacenter sensitivity analysis
+    -   Cost per useful token, request, training run, or quality target
+    -   Useful utilization, latency, capacity headroom, energy, cooling,
+        memory, networking, goodput, and recovery
+    -   Hyperscale amortization versus smaller private infrastructure
+-   Mobile sensitivity analysis
+    -   Silicon area, NRE amortization, shipment volume, memory and package
+        cost, energy, wake scope, battery, thermals, and feature value
+    -   Local execution, avoided cloud cost, privacy, offline operation,
+        software support, and model-change risk
+-   Representative datacenter and mobile break-even examples
+-   Architect-to-business decision checklist
+-   Developed after Chapter 6 and finalized after Chapter 10
+
 ------------------------------------------------------------------------
 
 # References
