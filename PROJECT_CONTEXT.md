@@ -157,17 +157,19 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 - `PROJECT.md` — governing collaboration and repository workflow instructions
 - `chapters/preface.md` — approved Preface; canonical unless subsequently revised
 - `chapters/ch01-historical-context.md` — revised full Chapter 1 draft awaiting review; approved tables are included and five approved figures remain placeholders
-- `chapters/ch02-workload-characteristics.md` — expanded Chapter 2 workload-analysis draft awaiting review; includes workload signatures, per-workload software ceilings and hardware conclusions, GPU-efficiency limits, future-world-model analysis, cross-continuum reuse, four tables, and six figure placeholders
+- `chapters/ch02-workload-characteristics.md` — expanded Chapter 2 workload-analysis draft awaiting review; includes workload signatures, a running example (document-assistant service), a forward glossary of accelerator families, per-workload software ceilings with measured gains, an author-computed batch-one decode bound, the executed necessity test with positive and negative verdicts (§2.14), GPU-efficiency limits, future-world-model analysis, and cross-continuum reuse
 - `chapters/ch03-fundamental-architectural-principles.md` — Chapter 3 draft awaiting review; translates workload signatures into execution, data-placement, numerical, scheduling, communication, and software contracts, with four tables and six figure placeholders
 - `chapters/ch04-architectural-stressors-and-tradeoffs.md` — Chapter 4 draft awaiting review; applies explicit scenario-to-response chains to interacting architectural stressors across the compute continuum, with three tables and eight figure placeholders
-- `chapters/ch05-cpus-and-gpus.md` — Chapter 5 draft awaiting review; establishes the CPU–GPU system baseline, explains GPU platform dominance, defines the limits of the GPU efficiency envelope without implying inability, and bridges explicitly to Chapter 6, with five tables and four figure placeholders
+- `chapters/ch05-cpus-and-gpus.md` — Chapter 5 draft awaiting review; establishes the CPU–GPU system baseline, explains GPU platform dominance, defines the limits of the GPU efficiency envelope without implying inability, partitions residual bounds into absorbed / structurally non-absorbable / contested (§5.11, Table 5.6), and bridges explicitly to Chapter 6
 - `appendices/appendix-g-economic-primer.md` — approved future-work placeholder for a plain-language datacenter and mobile acceleration-economics primer; designed after Chapter 6 and finalized after Chapter 10
-- `figures/` — currently empty
+- `discussions/review_ch1-5_toplevel_2026-07-17.md` — critical review of the first five chapters; its six priority recommendations were implemented on 2026-07-17 (quantitative evidence layer, executed necessity test in §2.14, forward glossary and running example in Chapter 2, canonical-home deduplication, Chapter 3/4 boundary sharpening, GPU-absorption partition in §5.11, trimmed takeaways, revised preface)
+- `figures/` — three draft figures produced 2026-07-17: `fig02-04-decode-bandwidth-bound` (worked decode roofline and token-ceiling chart), `fig02-07-necessity-test` (decision-structure flowchart), `fig05-05-absorption-partition` (three-way partition of residual bounds); remaining figures are placeholders
 - `references/references.md` — consolidated paper-level reference list, organized by chapter and intended for placement at the end of the assembled paper
 - `discussions/thread_bukatin-sparse-matrix-gpu-shared_2026-07-15.md` — supporting technical discussion, not governing methodology
 
 ## Open Work
 
+- Review the 2026-07-17 revision of the preface and Chapters 1–5 (implementation of the top-level review's six priority recommendations), including verification of all newly added quantitative claims against their cited sources.
 - Review and stabilize the Master Structural Outline before declaring v1.0.
 - Review the revised Chapter 1 text and included tables; approved figures remain placeholders pending later production.
 - Review the expanded Chapter 2 for workload coverage, causal consistency, economic reasoning, depth, and style; figures remain placeholders pending production.

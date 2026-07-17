@@ -12,7 +12,7 @@ The purpose is to narrow the design space without selecting an architecture fami
 
 ## 4.1 Stressors Interact
 
-Architectural stressors rarely occur alone. A long-context inference service may be constrained by KV capacity, memory bandwidth, low-batch decode, dynamic arrivals, and tail latency simultaneously. Sharding the model solves capacity while adding communication. Batching improves utilization while adding queueing and state. Quantization reduces traffic while creating conversions and quality constraints. A design that optimizes one metric in isolation can make the system worse.
+Architectural stressors rarely occur alone. The running example’s hyperscale document assistant is exactly such a system: a long-context inference service constrained by KV capacity, memory bandwidth, low-batch decode, dynamic arrivals, and tail latency simultaneously. Sharding the model solves capacity while adding communication. Batching improves utilization while adding queueing and state. Quantization reduces traffic while creating conversions and quality constraints. A design that optimizes one metric in isolation can make the system worse.
 
 Three distinctions are essential.
 
@@ -41,17 +41,15 @@ Third, **local optimization is not system optimization**. Reducing kernel time d
 
 ## 4.2 Data Movement, Locality, and Bandwidth
 
-Data movement is the recurring stressor because computation requires operands and produces state. Its cost depends on distance, access granularity, reuse, and whether movement performs useful work. Horowitz’s process-specific energy examples should not be treated as current constants, but the architectural result remains: moving data through a memory system can cost substantially more energy than the arithmetic it enables, and application-hardware matching must optimize both computation and communication [4.1].
+Data movement is the recurring stressor because computation requires operands and produces state. Its cost depends on distance, access granularity, reuse, and whether movement performs useful work. The magnitudes deserve to be stated once, with their boundary: in 45 nm at 0.9 V, Horowitz reported roughly 0.9 pJ for a 32-bit floating-point add and about 3.7 pJ for a 32-bit floating-point multiply, single-digit to tens of picojoules for small on-chip SRAM accesses, and on the order of 640 pJ to read a 32-bit word from external DRAM—two to three orders of magnitude above the arithmetic that word feeds [4.1]. Absolute values have shifted with process generations and these figures must not be quoted as current constants, but the ordering and the orders of magnitude have proved durable: moving data through a memory system can cost far more energy than the computation it enables, and application–hardware matching must therefore optimize communication and computation together.
 
 ### Scenario: low-batch transformer decode
 
 **Real-world scenario:** an interactive service or client generates one token at a time under an inter-token latency objective.
 
-**Workload behavior:** each step performs narrow operations and accesses weights plus a growing KV cache. Dependencies limit parallel work within one sequence. Low request volume or a strict batch window prevents enough aggregation to reuse weights across many sequences.
+**Workload behavior and software mitigation:** established quantitatively in §2.5 and not restated here—narrow per-step operations over weights and growing KV state, dependencies limiting parallelism within a sequence, and the full software arsenal (quantization, fusion, residency, continuous batching, paging, speculative decoding) applied first.
 
-**Software mitigation:** quantize weights and cache state; fuse operations; retain weights in device memory; use continuous batching, paging, and speculative decoding; choose layouts that coalesce accesses.
-
-**Residual architectural limit:** the minimum bytes required per accepted token, multiplied by the target token rate, approaches sustained memory bandwidth or energy. More arithmetic units do not reduce compulsory weight and state traffic.
+**Residual architectural limit:** the minimum bytes required per accepted token, multiplied by the target token rate, approaches sustained memory bandwidth or energy—the ≈48 tokens/s, ≈0.3%-intensity bound computed in §2.5. More arithmetic units do not reduce compulsory weight and state traffic.
 
 **Direct consequence:** execution units wait for operands; inter-token latency and energy per token remain high; a larger device may increase cost without proportional useful throughput.
 
@@ -208,9 +206,7 @@ Scaling divides work and state across additional components. It succeeds when th
 
 **Real-world scenario:** tokens route to experts distributed across devices.
 
-**Workload behavior:** messages are smaller and destinations data-dependent; expert loads vary; routing and computation alternate.
-
-**Software mitigation:** auxiliary balance losses, capacity factors, token sorting, expert replication, placement, hierarchical routing, and request bucketing.
+**Workload behavior and software mitigation:** characterized in §2.7, where measurements place all-to-all at roughly a third of MoE step time; balance losses, capacity factors, token sorting, replication, placement, and hierarchical routing are applied first.
 
 **Residual architectural limit:** model semantics preserve runtime skew; replication is capacity-limited; all-to-all traffic stresses different topology properties than bulk all-reduce.
 
@@ -592,7 +588,7 @@ The appropriate comparison is therefore not ASIC efficiency versus GPU efficienc
 
 ## 4.10 Tradeoff Synthesis Across the Compute Continuum
 
-The same stressor produces different architectural priorities across deployment classes.
+The same stressor produces different architectural priorities across deployment classes. Table 4.2 is the survey’s canonical deployment-class comparison at the design level; Chapters 3 and 5 reference it rather than repeating it.
 
 ### Table 4.2 — Stressor priorities across deployment classes
 
@@ -646,14 +642,9 @@ This paragraph is a bridge, not the architecture survey. Chapter 5 will examine 
 
 ## 4.12 Engineering Takeaways
 
-- Stressors interact, and relieving one often increases another; therefore, architecture should be evaluated at the system boundary and across several objectives, not by one bottleneck or peak metric.
-- Locality, transaction granularity, and reuse determine how much nominal bandwidth becomes useful, so more bandwidth is not a substitute for eliminating avoidable movement or matching the memory contract to the access structure.
-- Batching and concurrency improve throughput by consuming queueing time, memory, and isolation; useful utilization must therefore be measured under the deployment’s latency, fairness, and deadline constraints.
-- Scaling introduces communication, synchronization, imbalance, power, and failure cost, which means device count is valuable only while marginal useful work exceeds these costs.
-- Dynamic mechanisms adapt to irregularity while static mechanisms improve predictability; accordingly, the correct boundary follows workload uncertainty and the required tail or worst-case behavior.
-- Operator support can be functionally complete while fallback and conversion dominate the critical path, so programmability and portability must include mapping quality, observability, and lifecycle operations.
-- Energy per operation excludes memory, communication, idle, wake, cooling, and failed work; therefore, energy comparisons must use a complete useful-result boundary and sustained operating condition.
-- Failures become expected as component count and runtime grow, making goodput, fault containment, reset scope, recovery, and safe fallback architectural performance properties.
-- Flexibility absorbs workload change and reduces deployment risk; specialization is therefore economically necessary only when recurring savings or product constraints exceed flexibility’s option value and the full enablement cost.
-- Datacenter, enterprise, mobile, and embedded systems face the same physical stressors with different priorities, so architecture principles transfer across the continuum while design points and operational contracts differ.
-- No single response simultaneously maximizes flexibility, locality, utilization, determinism, energy efficiency, reliability, and low cost; thus, the present hardware-offload landscape should contain several architecture families rather than one universal successor to the GPU.
+- Stressors interact, and relieving one usually consumes another—batching buys utilization with queueing and state; sharding buys capacity with communication; quantization buys bandwidth with quality risk—so architecture must be evaluated at the system boundary across several objectives, never by one peak metric.
+- Data movement dominates the energy budget by two to three orders of magnitude over arithmetic at every process node measured, so locality, transaction granularity, and reuse determine how much nominal bandwidth and compute become useful.
+- Scaling introduces communication, synchronization, imbalance, power, and failure cost; device count adds value only while marginal useful work exceeds those costs, and the ceiling being approached (algorithmic, topology, power, reliability, economic) should be identified before adding devices.
+- Dynamic mechanisms adapt to irregularity while static mechanisms buy predictability; the correct boundary follows workload uncertainty and the tail or worst-case behavior the deployment actually requires.
+- Energy, reliability, and failure handling are performance properties: energy comparisons need a complete useful-result boundary including idle, wake, cooling, and failed work, and goodput after recovery—not nominal throughput—is what scale delivers.
+- Flexibility has option value that specialization must repay; because no single response maximizes flexibility, locality, utilization, determinism, energy efficiency, reliability, and cost simultaneously, the offload landscape necessarily contains several architecture families rather than one successor to the GPU.

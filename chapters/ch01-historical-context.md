@@ -59,9 +59,7 @@ Power introduces another capacity constraint. Research on warehouse-scale power 
 
 Datacenter and technical workloads first exploited multicore CPUs, SIMD, optimized numerical libraries, NUMA placement, and distributed execution. For highly regular data-parallel kernels, GPUs offered a different allocation of silicon. Graphics workloads had already driven high arithmetic throughput, wide memory systems, and extensive hardware multithreading. As graphics stages became programmable, developers began mapping nongraphical algorithms onto shader hardware. Early general-purpose GPU programming demonstrated the opportunity but forced applications through graphics-oriented APIs and data representations.
 
-The transition became practical when the hardware and programming interface changed. NVIDIA introduced CUDA in 2006, allowing developers to launch general-purpose kernels without expressing computation as a graphics pipeline. CUDA formalized a heterogeneous host/device model: the CPU begins and orchestrates execution, while GPU kernels execute many threads across streaming multiprocessors. This model exposed enough hierarchy and memory behavior for optimization while providing a scalable abstraction across GPU generations.
-
-The GPU traded some single-thread latency and dynamic generality for throughput. Many lightweight threads could cover long-latency events by allowing other warps to run. High-bandwidth memory sustained large parallel kernels. Registers and programmer-managed shared memory enabled reuse when software tiled computation effectively. For dense numerical and later neural-network workloads, these properties allowed more useful work per unit time and often per joule than CPU-only execution.
+The transition became practical when the hardware and programming interface changed. NVIDIA's introduction of CUDA in 2006 let developers launch general-purpose kernels without expressing computation as a graphics pipeline, formalizing a heterogeneous host/device model in which the CPU orchestrates execution while GPU kernels run many threads across streaming multiprocessors. The GPU traded some single-thread latency and dynamic generality for throughput: many lightweight threads covered long-latency events, high-bandwidth memory sustained large parallel kernels, and programmer-managed local storage enabled reuse. For dense numerical and later neural-network workloads, these properties allowed more useful work per unit time and often per joule than CPU-only execution. Chapter 5 examines this platform transition—and why it proved so durable—in architectural detail; here the historical point is simply that a programmable throughput platform existed before deep learning needed one.
 
 The system did not become automatically efficient. Software had to identify parallel regions, prepare and batch work, manage data placement, choose launch geometry, reduce transfers and synchronization, and keep kernels large enough to occupy the device. At fleet scale, schedulers also had to place jobs, share devices, account for memory capacity, and coordinate multi-device communication. Idle gaps caused by data preparation, memory faults, network collectives, small kernels, or load imbalance represent underused capital and energy even when peak device throughput is high.
 
@@ -69,7 +67,7 @@ The system did not become automatically efficient. Software had to identify para
 
 ### AI made the GPU central—and exposed system-level limits
 
-Neural-network training contained work that GPUs handled well: large collections of multiply-accumulate operations over dense tensors, substantial parallelism across examples and features, and repeated operations that could amortize launch and transfer costs. The 2012 AlexNet work is a visible milestone because its convolutional network was trained using two GPUs, demonstrating the practical role of GPU computation in a major image-recognition result. It was not the beginning of neural networks or GPU computing, but it helped establish the GPU as a central platform for deep learning.
+Neural-network training contained work that GPUs handled well: large collections of multiply-accumulate operations over dense tensors, substantial parallelism across examples and features, and repeated operations that could amortize launch and transfer costs. The 2012 AlexNet result, trained on two GPUs, made that fit visible and helped establish the GPU as the central platform for deep learning; Chapter 5 returns to why the surrounding software platform mattered as much as the silicon.
 
 As models grew, the metric expanded beyond kernel speed. Training throughput depends on keeping expensive devices supplied with work and coordinating them across nodes. Inference economics depend on request mix, batch formation, model residency, memory capacity, tail latency, and energy. Cost per token is useful for language-model services only when its boundary is explicit: model, precision, batch and sequence distributions, utilization, latency target, hardware level, energy accounting, and amortization all matter.
 
@@ -137,13 +135,9 @@ Table 1.1 summarizes why similar offload ideas arose under different deployment 
 
 ## 1.6 Why GPUs Became the Broad AI Platform
 
-The GPU’s importance comes from a combination of architecture and programmability. It provides high throughput for regular parallel work but remains broad enough to support changing algorithms. A general kernel programming model allows the same platform to run matrix multiplication, convolution, attention, reductions, transformations, simulation, and custom operators. Libraries, compilers, profilers, debuggers, and frameworks make optimization reusable across applications.
+The GPU’s importance comes from a combination of architecture and programmability: high throughput for regular parallel work joined to a general kernel model, mature libraries, and tools that make optimization reusable across applications. That balance—rather than any single throughput figure—distinguished GPUs from narrower fixed-function accelerators and allowed one platform to absorb more than a decade of algorithm change. The GPU also appears across the entire compute continuum, although for different reasons in each class: large-scale training and flexible inference in datacenters; combined graphics, creative, and AI workloads in workstations and PCs; programmable parallel compute in mobile SoCs when a model or operator does not fit the NPU; and rapidly evolving perception and planning workloads in robotics.
 
-This balance distinguished GPUs from narrower fixed-function accelerators. A specialized engine can be more efficient for its target operation, but a GPU can absorb algorithm change through software and selective hardware evolution. Modern GPUs are not “classic SIMD machines” frozen in time. They combine SIMT execution, caches, large register files, software-managed storage, matrix units, sophisticated scheduling, and high-bandwidth interconnects.
-
-The GPU also appears across the continuum, but for different reasons. In datacenters, it supports large-scale training and flexible inference. In workstations and PCs, it combines graphics, creative, simulation, and AI workloads. In mobile SoCs, integrated GPUs provide programmable parallel compute when a model or operator does not fit the NPU. In robotics, GPUs support perception and planning workloads whose algorithms change too quickly or whose operation set is too broad for a narrow accelerator.
-
-The same flexibility creates costs. Instruction issue, general address generation, registers, caches, multithreading state, and support for diverse kernels consume area and energy. GPU efficiency also depends on sufficient parallelism, compatible control paths, suitable memory access, and enough work to amortize launch and scheduling overhead. Those conditions vary by workload phase and deployment.
+The same flexibility has costs—instruction issue, general address generation, registers, caches, and multithreading state consume area and energy—and GPU efficiency depends on conditions that vary by workload phase and deployment. Chapter 5 develops both sides of this argument in full: the platform economics of GPU dominance in §5.6–§5.7, and the conditions under which the efficiency envelope narrows in §5.9. This chapter needs only the historical conclusion: by the time AI demand arrived at scale, the GPU was the broadest available throughput platform, and that breadth is precisely what the second transition now presses against.
 
 ## 1.7 The Second Transition: Specialization Across the Continuum
 
@@ -155,6 +149,8 @@ In mobile systems, specialization aims to execute supported models at low energy
 
 In embedded and robotic systems, specialization may prioritize predictable pipelines, local sensor interfaces, and bounded response. FPGAs and spatial accelerators can express custom data paths; microNPUs can accelerate common neural operators near a microcontroller; near-sensor processing can reduce raw-data movement. Flexibility, qualification, updateability, and worst-case timing remain as important as nominal efficiency.
 
+The second transition is an observable industrial fact, not only a forecast, although its extent remains workload- and deployment-dependent. Beyond Google’s TPU line—now in production for both training and inference across multiple generations [evidence class A]—AWS deploys Trainium and Inferentia accelerators in production [class A, vendor disclosure], Meta has published the architecture of its MTIA inference accelerator through peer review [class A/C, internally deployed], and independent designs such as Groq’s deterministic tensor streaming processor and Cerebras’s wafer-scale engine ship to customers [class A/B]. Mobile SoCs from every major vendor integrate NPUs, and microNPUs are licensed IP for embedded parts [class A]. Chapters 6 and 7 evaluate these systems architecturally; Chapters 1 through 5 establish the criteria against which that evidence should be judged.
+
 These categories overlap. A commercial device may combine programmable vector cores, matrix arrays, dataflow scheduling, caches, scratchpads, packet networks, and fixed-function engines. Vendor labels such as “NPU,” “tensor processor,” or “AI engine” do not by themselves identify the execution model, memory hierarchy, scheduling mechanism, or deployment behavior.
 
 Architectural ideas also migrate across deployment classes rather than following a one-way path from datacenter to device. Local scratchpads, quantization, explicit data movement, spatial arrays, compressed execution, power gating, and heterogeneous scheduling recur throughout the continuum, but are resized and integrated for different economic and physical envelopes. Mobile techniques for idle power and low-energy memory can inform datacenter energy proportionality; datacenter compiler, scheduling, and observability techniques can inform enterprise and edge consolidation. Enterprise private AI infrastructure may increasingly resemble a small datacenter when data-domain protection, governance, or predictable local service justifies it, while non-mobile edge remains an intermediate design point. Reuse is therefore strongest at the level of architectural principles, parameterized IP, and software abstractions—not necessarily as an unchanged physical implementation.
@@ -163,68 +159,17 @@ Specialization shifts responsibility rather than removing it. Replacing dynamic 
 
 [**Figure 1.5 placeholder — Specialization tradeoff space.** A conceptual map compares CPU, GPU, programmable NPU, FPGA or reconfigurable fabric, and narrow fixed-function engines across flexibility, efficiency, predictability, and compiler or integration burden. Use overlapping regions, not precise points, and annotate how workload stability and deployment class change the preferred tradeoff.]
 
-### Table 1.2 — Software optimization and the next bottleneck
+Each software optimization in this story rests on assumptions and, when pushed far enough, stresses a successor resource. Chapter 2 catalogs these optimization-to-next-bottleneck chains where they belong—alongside the workload analysis that produces them (Tables 2.2 and 2.3)—so this chapter does not enumerate them here.
 
-| Deployment | Optimization | Immediate benefit | Assumption required | Resource stressed next or common failure mode |
-|---|---|---|---|---|
-| Datacenter | Batching and request aggregation | Higher accelerator occupancy and arithmetic efficiency | Requests can wait and shapes can be grouped | Queueing and tail latency; memory-capacity pressure |
-| Datacenter | Kernel fusion and tiling | Less intermediate traffic; greater on-chip reuse | Operations can be legally combined and working sets fit local storage | Register or SRAM pressure; reduced occupancy; compiler complexity |
-| Datacenter | Mixed precision and quantization | More arithmetic throughput and lower storage traffic | Accuracy and numerical stability remain acceptable | Conversion overhead, unsupported operations, bandwidth at another hierarchy level |
-| Datacenter | Communication overlap | Hides a portion of collective or transfer latency | Independent computation is available and scheduling is balanced | Network congestion, synchronization tails, reduced overlap in later phases |
-| Datacenter | Tensor, pipeline, or expert parallelism | Allows models to exceed one device and increases aggregate compute | Partitioning overhead remains smaller than useful work | Collectives, all-to-all traffic, bubbles, load imbalance, failure domains |
-| Mobile | Quantization and model compression | Lower memory footprint, bandwidth, and arithmetic energy | Model quality and operator coverage remain acceptable | Reformatting, fallback, shared-memory contention, accuracy loss |
-| Mobile | Heterogeneous graph partitioning | Routes operations to a lower-energy engine | Transfer and synchronization cost is amortized | CPU wakeups, copies, unsupported subgraphs, fragmented execution |
-| Mobile | Always-on offload | Keeps large CPU/GPU domains asleep | Small engine can process the continuous stream independently | Wake-up transitions, false triggers, sensor and memory energy |
-| Mobile | DVFS and race-to-idle policies | Balances active energy, leakage, thermals, and latency | Workload phase and deadline are predictable enough | Thermal oscillation, missed latency, energy lost in transitions |
-| Embedded/robotics | Static scheduling and fixed pipelines | Predictable execution and low control overhead | Workload and timing model are stable | Poor adaptability, difficult updates, worst-case shared-resource interference |
-| Embedded/robotics | Near-sensor preprocessing | Reduces raw-data movement and response time | Useful reduction can occur before full-system processing | Sensor thermal limits, local memory, accuracy and observability constraints |
-| Embedded/robotics | Model pruning or compact models | Fits memory and energy envelope | Quality remains adequate for operating conditions | Distribution shift, safety margin, unsupported sparse execution |
+## 1.8 Consequences Ahead
 
-## 1.8 System Architecture Consequences
-
-Across all three deployment paths, an accelerator changes more than instruction execution.
-
-### Memory becomes a contract
-
-“Unified memory” may mean a shared address space, shared physical memory, automatic migration, or some combination. It does not guarantee uniform latency, bandwidth, coherence, or concurrent access. Architects must identify ownership, residency, consistency, translation, page-fault behavior, copy paths, and contention for every engine. A discrete datacenter GPU, a mobile NPU sharing LPDDR, and a near-sensor accelerator have different memory contracts even if all are presented through a high-level framework.
-
-### Scheduling crosses layers
-
-The OS schedules CPU threads, but device runtimes, firmware, accelerator queues, collective libraries, and cluster orchestrators schedule other portions of the same request. Priority and isolation must propagate across those boundaries if a latency objective or tenant policy is to have meaning. Backpressure must also propagate; otherwise, faster submission simply moves queueing into a less observable layer.
-
-In a datacenter, scheduling determines packing, device sharing, service latency, and fleet utilization. In mobile, it determines which engine runs a graph, which power domains wake, and how applications share memory bandwidth and thermals. In robotics, scheduling participates in the timing proof for a physical control loop.
-
-### Portability has degrees
-
-A framework may make a model functionally portable while leaving performance dependent on device-specific operators, layouts, precision formats, compilation, and memory policy. The relevant question is not only whether a model runs, but what fraction runs on the intended engine, where fallback occurs, which copies are inserted, and how much tuning survives a hardware generation change.
-
-### Specialization creates lifecycle dependencies
-
-Hardware usefulness depends on compiler and framework coverage, driver stability, debugging and profiling, security maintenance, model support, deployment tooling, and a viable update path. A theoretically efficient architecture with an immature software path can impose more integration and operational cost than its silicon advantage justifies.
-
-### Table 1.3 — Success metrics across the compute continuum
-
-| Concern | Hyperscale/datacenter | Client/mobile | Embedded/automotive/robotics |
-|---|---|---|---|
-| Useful performance | Training or service throughput under SLOs; completed requests or tokens | Response time and sustained user-visible performance | Deadline completion, worst-case latency, and jitter |
-| Utilization | Productive device, memory, network, rack, and fleet use with required headroom | Appropriate engine occupancy without unnecessary wake time | Adequate resource use within deterministic schedules; not maximum occupancy |
-| Energy | Joules per completed workload unit; rack and fleet energy | Energy per inference or token; battery impact | Mission energy, energy per control or perception cycle |
-| Power and thermal | Rack power, facility capacity, cooling, peak management | Skin temperature, passive cooling, power-domain residency | SWaP-C, enclosure cooling, sensor and actuator power competition |
-| Economics | Cost per token/request, amortized accelerator cost, TCO | Device cost, memory cost, battery and thermal design cost | Component and qualification cost, mission duration, maintenance |
-| Latency | Mean and tail latency, queueing, collective tails | Interactive responsiveness and wake-up delay | Bounded response, deadline miss behavior, control-loop stability |
-| Memory | Model residency, HBM capacity, host/device movement, distributed state | Shared LPDDR bandwidth, copies, contention, footprint | Limited SRAM/DRAM, deterministic access, sensor-stream movement |
-| Reliability and safety | Availability, fault containment, checkpointing, degraded capacity | Application isolation, graceful fallback, thermal management | Fail-safe behavior, redundancy, certification, disconnected operation |
-| Software maturity | Scheduler, compiler, framework, collectives, observability, fleet management | OS dispatch, graph partitioning, driver/runtime, app lifecycle | Real-time integration, tooling, timing analysis, long-term update support |
-| Privacy and connectivity | Data governance and locality policies | Local processing and reduced cloud dependence | Local autonomy, limited or intermittent connectivity, safety boundaries |
+Across all three deployment paths, adopting an accelerator changes more than instruction execution: memory becomes an explicit contract among engines, scheduling spans layers the operating system does not control, portability acquires degrees, and specialization creates compiler, driver, and lifecycle dependencies. These consequences are developed where they belong—the memory, scheduling, and software contracts in Chapter 3; their interactions and costs in Chapter 4; and their concrete CPU–GPU instance in Chapter 5. The historical chapter’s job is complete once the pattern is visible: each transition moved responsibility among hardware, compiler, runtime, operating system, and application, and no transition removed it.
 
 ## Engineering Takeaways
 
-- AI acceleration is best understood through related but distinct transitions across datacenter, mobile, and embedded systems.
-- Software optimization did not fail. It exposed limits in parallelism, locality, bandwidth, utilization, power, energy, latency, communication, and predictability.
-- Hyperscalers seek useful work per dollar and joule under service and reliability constraints. Utilization is a means to that end, not an isolated target.
-- Mobile acceleration evolved from heterogeneous SoCs, DSPs, ISPs, and always-on engines; its primary constraints are energy, battery, thermals, shared memory, and wake-up behavior.
-- Embedded and robotic acceleration must be evaluated through bounded latency, jitter, safety, mission energy, sensor movement, and SWaP-C—not average throughput alone.
-- CPUs and GPUs remain foundational. Specialized accelerators add execution domains rather than forming a universal replacement hierarchy.
-- Data movement and whole-system integration frequently determine useful performance and energy more than peak operation rates.
-- Every accelerator changes memory, scheduling, synchronization, observability, failure handling, and deployment responsibilities.
-- Hardware selection is workload and deployment selection. There is no context-free “best accelerator.”
+- AI acceleration is best understood as related but distinct transitions across datacenter, mobile, and embedded systems, driven by a different limiting constraint in each deployment class.
+- Software optimization did not fail; it succeeded until it exposed limits in parallelism, locality, bandwidth, power, energy, latency, communication, and predictability that software alone could no longer move economically.
+- Mobile acceleration evolved from heterogeneous SoCs, DSPs, ISPs, and always-on engines rather than descending from datacenter designs, so the NPU is an evolutionary step whose defining constraints are energy, shared memory, and wake-up behavior.
+- Embedded and robotic acceleration participates in physical control loops, which means bounded latency, jitter, safety, and SWaP-C—not average throughput—define success.
+- CPUs and GPUs remain foundational; specialized accelerators add execution domains rather than forming a replacement hierarchy, and every accelerator shifts memory, scheduling, and lifecycle responsibility rather than eliminating it.
+- Hardware selection is workload and deployment selection; there is no context-free “best accelerator.”

@@ -128,7 +128,7 @@ These scenarios show why “percent of operations offloaded” is an incomplete 
 
 ## 5.4 From Graphics Pipeline to Programmable GPU Computing
 
-The GPU did not begin as a smaller CPU with more cores. Its architecture developed under graphics workloads containing abundant data parallelism, regular arithmetic, latency-tolerant pipelines, and high bandwidth demand. Fixed graphics stages gradually became programmable. Unified shader architectures then allowed a common pool of processors to execute several graphics stages, improving utilization and creating a more general parallel machine.
+The GPU did not begin as a smaller CPU with more cores. Chapter 1 sketched this history in passing; this section is its canonical treatment. The architecture developed under graphics workloads containing abundant data parallelism, regular arithmetic, latency-tolerant pipelines, and high bandwidth demand. Fixed graphics stages gradually became programmable. Unified shader architectures then allowed a common pool of processors to execute several graphics stages, improving utilization and creating a more general parallel machine.
 
 Early general-purpose GPU computing mapped nongraphical algorithms through graphics APIs and data abstractions. This demonstrated throughput potential but imposed an awkward software contract: computation had to resemble rendering, data had to fit graphics resources, and programming tools were not designed for ordinary parallel applications.
 
@@ -330,43 +330,43 @@ Chapter 2 defined the GPU efficiency envelope through parallelism, coalescing, l
 
 Autoregressive decode exposes limited parallel work within one sequence compared with large training or prefill operations. Batching sequences improves tensor shapes and device utilization but consumes queueing time and KV-cache capacity. Continuous batching reduces idle gaps but introduces scheduling and state-management work.
 
-**Observation:** software can aggregate requests, fuse kernels, capture graphs, and optimize KV layout, yet a latency target limits batching and token dependencies limit look-ahead. **Conclusion:** a wide GPU remains attractive when fleet demand supplies concurrency, but a right-sized or more state-local architecture becomes economically credible when narrow decode is stable, material, and cannot fill the GPU without violating service latency.
+Software can aggregate requests, fuse kernels, capture graphs, and optimize KV layout, yet a latency target limits batching and token dependencies limit look-ahead; the arithmetic of §2.5 fixes the ceiling that remains once those techniques are exhausted. The running example shows both outcomes: the hyperscale document assistant escapes the bound statistically because fleet demand supplies admissible concurrency, while the enterprise deployment cannot—which is why §2.14 returned opposite verdicts for the same model. A wide GPU therefore remains attractive where demand fills it within the latency budget; a right-sized or more state-local architecture becomes economically credible where narrow decode is stable, material, and cannot fill the GPU without violating service latency.
 
 ### Sparse and irregular access
 
 Embeddings, graph aggregation, unstructured sparsity, and routed experts generate addresses and work counts that depend on data. GPUs can execute them and provide gather, atomic, and dynamic mechanisms. Sorting, reordering, compression, and specialized kernels improve locality.
 
-**Observation:** these transformations have metadata and latency cost, and runtime sparsity may remain uncoalesced or imbalanced. **Conclusion:** when useful transaction bytes and active-lane fractions remain persistently low, adding nominal GPU arithmetic does not solve the bound; architectures with different granularity, scheduling, routing, or near-data organization may justify their enablement cost.
+These transformations carry metadata and latency costs of their own, and runtime sparsity may remain uncoalesced or imbalanced despite them. When useful transaction bytes and active-lane fractions stay persistently low, adding nominal GPU arithmetic does not move the bound; architectures with different access granularity, scheduling, routing, or near-data organization can then justify their enablement cost.
 
 ### Resource-heavy fused kernels
 
 Fusion reduces launches and intermediate memory traffic. It also increases register lifetime, local-memory demand, code size, and sometimes control complexity. Resource use may reduce resident blocks and expose latency.
 
-**Observation:** the GPU compiler must trade eliminated movement against occupancy and reusable library paths. **Conclusion:** fusion is not an unlimited substitute for architectural locality; stable pipelines may benefit from hardware that retains state or streams values without allocating full general thread context.
+The GPU compiler must trade eliminated movement against occupancy and reusable library paths, and that trade has a floor: fusion is not an unlimited substitute for architectural locality. Stable pipelines may benefit from hardware that retains state or streams values without allocating full general thread context.
 
 ### Communication-dominated scale
 
 Distributed training and sharded inference increase aggregate compute and memory capacity. Software overlaps collectives, changes parallelization, compresses communication, and uses topology-aware algorithms.
 
-**Observation:** exposed communication, imbalance, and recovery rise when the workload’s communication structure no longer fits the fabric. **Conclusion:** another GPU adds value only when its marginal useful work exceeds the network, synchronization, power, and failure cost; specialized interconnect, collective, memory, or execution organization can become the limiting investment.
+Exposed communication, imbalance, and recovery all rise when the workload’s communication structure no longer fits the fabric. At that point another GPU adds value only if its marginal useful work exceeds the network, synchronization, power, and failure cost it brings—and the limiting investment can shift from compute devices to specialized interconnect, collective, memory, or execution organization.
 
 ### Tail latency and deterministic response
 
 GPU scheduling and multithreading improve throughput under latency variation. Shared resources, queue depth, dynamic clocks, memory contention, and long-running kernels can create response variance. Priority queues, partitioning, preemption points, and admission control mitigate it.
 
-**Observation:** these mechanisms consume capacity and do not necessarily bound every interference path. **Conclusion:** for safety-relevant or hard-deadline stages, deterministic scheduling, partitioned memory, and bounded pipelines may matter more than average GPU throughput; the GPU can remain in the system for less critical perception or planning.
+These mechanisms consume capacity, and none of them necessarily bounds every interference path. For safety-relevant or hard-deadline stages, deterministic scheduling, partitioned memory, and bounded pipelines may therefore matter more than average GPU throughput, while the GPU remains in the system for less critical perception or planning work.
 
 ### Always-on and small-duty-cycle work
 
 A mobile or embedded GPU can execute a small model quickly, but waking the GPU domain, raising memory frequency, submitting work from the CPU, and contending with graphics may dominate energy. Batching is often impossible because the task must react to one event.
 
-**Observation:** kernel efficiency does not imply low energy for an intermittent end-to-end path. **Conclusion:** an always-on engine becomes attractive when it keeps CPU, GPU, and external memory domains asleep often enough to amortize its area and integration cost.
+Kernel efficiency does not imply low energy for an intermittent end-to-end path; the four-orders-of-magnitude wake-scope gap quantified in §2.10 is the governing fact. An always-on engine becomes attractive exactly when it keeps CPU, GPU, and external memory domains asleep often enough to amortize its area and integration cost.
 
 ### Unsupported or rapidly changing operations
 
 Specialized GPU matrix paths support selected formats, shapes, and operations, while SIMT cores handle the rest. Libraries and compilers expand coverage.
 
-**Observation:** new operations can fall back to general GPU code and remain functionally supported, preserving research velocity. **Conclusion:** the GPU retains high option value under algorithm change; narrower offload is justified only when the target workload is stable enough and common enough that repeated efficiency gains exceed portability and lifecycle risk.
+New operations can fall back to general GPU code and remain functionally supported, which preserves research velocity and gives the GPU high option value under algorithm change. Narrower offload is justified only when the target workload is stable enough and common enough that repeated efficiency gains exceed portability and lifecycle risk—the condition that §2.14 showed failing for Nervana and holding for the TPU.
 
 ### Table 5.4 — When continued GPU optimization or additional specialization is favored
 
@@ -394,9 +394,58 @@ There are four distinct claims:
 
 This formulation also explains specialization inside GPUs. Matrix units, media engines, copy engines, compression, and collective support remove recurring costs while retaining the larger platform. External accelerators make a stronger trade: they may change execution, memory, numerical, or scheduling contracts more substantially.
 
-The boundary is not fixed. If a formerly narrow accelerator gains programmability, it may absorb more work. If a GPU adds a specialized path, the economic case for a separate device may shrink. If a workload becomes more irregular, a prior ASIC may lose utilization and the GPU may regain the advantage. Architecture families should therefore be compared against measured workload signatures and lifecycle conditions, not arranged in a permanent hierarchy.
+The boundary is not fixed. If a formerly narrow accelerator gains programmability, it may absorb more work. If a GPU adds a specialized path, the economic case for a separate device may shrink. If a workload becomes more irregular, a prior ASIC may lose utilization and the GPU may regain the advantage. Architecture families should therefore be compared against measured workload signatures and lifecycle conditions, not arranged in a permanent hierarchy. The next section makes that moving boundary explicit.
 
-## 5.11 CPUs and GPUs Across the Compute Continuum
+## 5.11 What GPU Evolution Absorbs—and What It Cannot
+
+The strongest objection to this survey’s two-transition thesis deserves a direct answer rather than a passing caveat. The objection runs: GPU vendors respond to every residual bound that Chapters 2 and 4 identify, so the second transition will largely happen *inside* the GPU—as it already has with matrix units—leaving external accelerators a permanently shrinking remainder. If that is right, Chapter 6 describes a niche; if it is wrong, Chapter 6 describes the future. The evidence supports neither extreme, and the productive move is to partition the residual bounds of Chapter 2 into three classes: those the GPU contract has demonstrably absorbed, those that are structurally outside any throughput-oriented device contract, and a contested middle where the outcome is decided by the economics of §2.14 rather than by architecture alone.
+
+### Bounds the GPU has absorbed or is absorbing (evidence class A)
+
+The absorption record is real and should be stated plainly, because it explains why the GPU remains the default platform:
+
+### Table 5.6 — Residual bounds absorbed into the GPU platform
+
+| Residual bound (Chapter 2) | GPU response, shipped | What the response preserves |
+|---|---|---|
+| Matrix arithmetic density | Tensor cores integrated in the SM since Volta [5.8] | SIMT programmability around the matrix path |
+| Precision reduction | FP16/BF16/FP8 with hardware conversion and per-layer scaling support in Hopper’s transformer engine [5.9] | Library and framework compatibility |
+| Structured sparsity | 2:4 structured-sparse execution [5.9] | Dense-path programming model |
+| Data-movement overhead | Asynchronous copy engines and tensor memory accelerators decoupling movement from compute [5.9] | The kernel abstraction |
+| Launch and submission overhead | Graph capture and device-side scheduling | Host-driven execution model |
+| Scale-up communication | Multi-device NVLink domains treating a rack as one accelerator complex [5.9] | Single-platform software stack |
+| Sharing and isolation | Multi-instance partitioning of one device | Fleet scheduling flexibility |
+
+Each row absorbs a bound *while preserving the platform contract*—programmability, library compatibility, and accumulated software capital. This is specialization occurring inside the GPU, exactly as §5.7 described, and it is why the necessity test's fourth condition so often resolves in the GPU's favor: the challenger must beat not today's device but this trajectory plus its ecosystem.
+
+### Bounds structurally outside the throughput contract
+
+A second class of bounds cannot be absorbed, because the obstacle is the GPU contract itself rather than any parameter of its implementation:
+
+- **Wake-scope and always-on energy.** The §2.10 bound is set by which power domains and memory paths must be active, not by arithmetic efficiency. A host-driven device with a deep runtime, large shared memory, and driver-mediated submission *is* the energy cost; no generation of the same contract reaches the sub-milliwatt regime in which always-on silicon operates [2.21]. Absorbing this bound would mean abandoning the submission and memory model that defines the platform.
+- **Bounded worst-case timing and certification.** GPU mechanisms deliver statistical tail control; safety cases require provable bounds on interference paths through shared schedulers, caches, and DMA. Removing the dynamic sharing that obstructs the proof removes what makes the GPU economically a GPU. TPU v1's deterministic pipeline was a contract change, not a parameter change [1.12], and that distinction generalizes.
+- **Near-sensor locality.** When the bound is the energy and latency of moving raw sensor data to a central device (§2.11), the lever is physical placement. A central throughput device cannot occupy the sensor's location; the economics of a large die contradict the SWaP-C envelope at the sensor.
+- **Per-unit cost floors at embedded volume.** A microNPU occupying a few square millimeters beside a microcontroller meets a component-cost target that no general throughput device approaches, independent of efficiency progress. The embedded envelope prices out generality itself.
+
+These four are the secure foundation of the beyond-GPU case: they justify architecture families by contract change, and no plausible GPU roadmap reaches them.
+
+### The contested middle
+
+Between the two classes lies the territory where the commercial battle is actually fought:
+
+- **Low-batch decode.** The bandwidth bound of §2.5 is being attacked from both sides: GPU platforms with faster memory, FP8 paths, and disaggregated-serving support; decode-oriented designs—deterministic tensor streaming with model state held in distributed on-chip SRAM [5.10], and related architectures—by changing the memory contract outright. Which side wins at a given operator's volume is a §2.14 condition-4 question, and the answer is genuinely open.
+- **MoE routing and all-to-all.** Fabric and collective evolution inside the GPU platform competes with topology- and routing-specialized designs for a bound measured at roughly a third of step time (§2.7).
+- **Near-memory computation for embeddings and retrieval.** Processing-in-memory prototypes (evidence class C) compete with sharding and caching software on conventional accelerators; the software side has so far held.
+
+In this middle band, silicon efficiency decides outcomes less often than software capital and workload stability do—the same terms that decided the Nervana and Graphcore cases. Chapter 7's product analysis should be read with this partition in hand.
+
+### The partition is Chapter 6's mandate
+
+Chapter 6 can now be given a precise assignment rather than a general one. Architecture families that attack the structural non-absorbables—always-on NPUs, deterministic pipelines, near-sensor engines, microNPUs—earn their place by contract change and are secure against GPU evolution. Families that attack the contested middle must demonstrate, workload by workload, that the necessity test's fourth condition holds against a moving target. Any family that attacks an absorbed bound is competing with the GPU's strongest ground and carries the burden of explaining why its advantage survives the platform's next generation.
+
+[**Figure 5.5 (draft produced) — Partition of residual bounds by absorbability.** File: `figures/fig05-05-absorption-partition.svg` (also `.png`). Three columns: absorbed into the GPU platform (with shipped mechanism named per bound), structurally outside the throughput contract (with the contract obstacle named), and contested middle (with both competing responses named). Draw arrows from each Chapter 2 residual bound into its column. Annotate the contested column with the §2.14 condition-4 criterion that decides it.]
+
+## 5.12 CPUs and GPUs Across the Compute Continuum
 
 ### Table 5.5 — CPU and GPU roles by deployment class
 
@@ -412,7 +461,7 @@ The architectural idea migrates in both directions. Datacenter GPUs contribute c
 
 Reuse does not imply identical chips. A datacenter GPU can assume active cooling, high-power memory, and large concurrent demand. A mobile GPU must coexist with display and media workloads under passive cooling. A robotic GPU may require ruggedization, bounded interference, and long support life. The shared principles are programming hierarchy, parallel execution, locality, and heterogeneous orchestration; implementation and economics remain deployment specific.
 
-## 5.12 Bridge to Domain-Specific Acceleration
+## 5.13 Bridge to Domain-Specific Acceleration
 
 The CPU and GPU establish two important endpoints in the design space, but not the only endpoints.
 
@@ -432,16 +481,11 @@ Chapter 6 can therefore be approached through explicit questions:
 
 These questions prevent Chapter 6 from becoming a list of devices. Tensor processors, systolic designs, NPUs, reconfigurable fabrics, wafer-scale systems, memory-centric architectures, and neuromorphic approaches should be compared as different answers to the contracts and stressors established in Chapters 2 through 5.
 
-## 5.13 Engineering Takeaways
+## 5.14 Engineering Takeaways
 
-- CPUs devote substantial machinery to low-latency progress, dynamic behavior, protection, and compatibility; therefore, they remain the control and integration baseline even when most AI arithmetic is accelerated.
-- Vector and matrix extensions let CPUs accelerate recurring kernels without crossing a device boundary, so offload is justified only when the remaining throughput, energy, or predictability benefit exceeds transfer and enablement cost.
-- GPUs allocate more resources to throughput and tolerate latency with many grouped threads; their advantage therefore depends on abundant ready work, compatible lane behavior, useful memory transactions, sufficient residency, and amortized overhead.
-- CUDA aligned programming abstractions, compatibility, libraries, tools, frameworks, and operations around GPU hardware, making software capital and lifecycle risk architectural selection criteria rather than secondary ecosystem details.
-- AI-era GPUs incorporate matrix units and other specialized paths; thus, specialization is a continuum that can occur within a broad platform as well as in a separate accelerator.
-- The CPU and GPU divide one request across memory, queues, synchronization, power, and failure boundaries, so performance and energy must be measured at the useful-result boundary rather than attributed to an isolated kernel.
-- Batching, fusion, layout, graph capture, mixed precision, and communication overlap extend GPU efficiency; therefore, a domain-specific response becomes credible only after these software techniques leave a stable, consequential residual bound.
-- Low-batch dependencies, irregular access, routed work, exposed communication, hard deadlines, and always-on duty cycles can remain outside the GPU’s best efficiency envelope; therefore, although GPUs can execute these phases, a different architectural contract may produce better lifecycle economics.
-- GPU flexibility protects against model and operator change, which means a narrower design must repay the option value, portability, integration, and support that it gives up.
-- CPU and GPU roles differ across datacenter, enterprise, client/mobile, and embedded systems; accordingly, architectural principles transfer across the continuum while power, memory, scheduling, reliability, and economic design points must be retuned.
-- Neither CPU nor GPU is a universal endpoint; Chapter 6 should therefore compare domain-specific families by what machinery they reorganize, which assumptions they exploit, and when those choices are economically justified.
+- CPUs remain the control and integration baseline of every AI system—they own the system contract even when they execute a minority of the arithmetic—and vector or matrix extensions let them absorb recurring kernels without crossing a device boundary.
+- The GPU’s advantage is conditional on abundant ready work, compatible lane behavior, useful memory transactions, sufficient residency, and amortized overhead; the CPU–GPU pair divides each request across memory, queue, power, and failure boundaries that must be measured at the useful-result boundary.
+- CUDA’s alignment of abstractions, compatibility, libraries, tools, and operations converted software capital into an architectural selection criterion; a narrower design must repay the option value, portability, and support it gives up—the condition that decided the §2.14 cases.
+- Specialization is already occurring inside the GPU: tensor cores, narrow precision, structured sparsity, asynchronous movement, graph submission, and scale-up fabrics have absorbed several of Chapter 2’s residual bounds while preserving the platform contract (Table 5.6).
+- Four bounds are structurally beyond that absorption—wake-scope energy, provable worst-case timing, near-sensor locality, and embedded per-unit cost floors—and they anchor the secure portion of the beyond-GPU case; a contested middle (low-batch decode, MoE routing, near-memory lookup) is decided by volume, stability, and software economics rather than silicon alone.
+- Chapter 6 should therefore compare domain-specific families by which contracts they change, which assumptions they exploit, and where they sit in the absorption partition—not as a catalog of devices.

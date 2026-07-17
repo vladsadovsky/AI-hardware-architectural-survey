@@ -131,5 +131,6 @@ Utilization is not an isolated objective. Treat it as a means to improve useful 
 - Chapter 4 architectural-stressors draft awaiting review: `chapters/ch04-architectural-stressors-and-tradeoffs.md`
 - Chapter 5 CPU-and-GPU draft awaiting review: `chapters/ch05-cpus-and-gpus.md`
 - Appendix G economic-primer future-work placeholder: `appendices/appendix-g-economic-primer.md`
+- 2026-07-17: critical review of Chapters 1–5 delivered (`discussions/review_ch1-5_toplevel_2026-07-17.md`) and its recommendations implemented across the preface and Chapters 1–5: quantitative evidence layer (worked decode bound, TPU v1 figures, MoE and always-on measurements), executed necessity test with positive and negative cases (new §2.14), forward glossary and running example, deduplication under a canonical-home rule, Chapter 3/4 boundary sharpening, GPU-absorption partition (new §5.11), trimmed takeaways, three draft figures in `figures/`, and expanded `references/references.md`. All revised chapters await user review.
 
 Update this section only when the canonical working state materially changes.

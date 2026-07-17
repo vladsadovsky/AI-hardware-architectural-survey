@@ -13,6 +13,8 @@ The central idea is that an accelerator is a set of contracts:
 
 Specialization changes these contracts; it does not remove them. Hardware can replace dynamic discovery with explicit scheduling, caches with scratchpads, general instructions with tensor operations, or coherent sharing with message passing. Each substitution can improve efficiency because it eliminates machinery or exposes stronger assumptions. It also transfers responsibility into software and narrows the conditions under which the design remains efficient.
 
+A note on the division of labor between this chapter and the next: Chapter 3 *defines* the contracts—what each organization promises, assumes, and requires of software. Chapter 4 *prices* them—what each choice costs when stressors interact and which new limit each response introduces. Where a definition below unavoidably mentions a cost, the full accounting is deferred to Chapter 4 rather than repeated here.
+
 ## 3.1 From Workload Signature to Architectural Contract
 
 An architectural decision should begin with a workload phase, not a model name. A dense training matrix multiplication and an autoregressive decode step may belong to the same model while requiring different parallel width, memory residency, and scheduling. Likewise, graph aggregation and its following dense transformation may share a framework graph but occupy different architectural regimes.
@@ -32,6 +34,8 @@ The workload signature developed in Chapter 2 can be read as a set of questions:
 The answers define the required architectural properties. High and regular data parallelism can support wide execution. Predictable reuse can support explicit local buffers. Irregular and evolving working sets may favor hardware-managed caching. Tight deadlines may require bounded arbitration and preemption. Large distributed state may make the interconnect part of the execution engine.
 
 The mapping is many-to-many. One workload phase may run on several architecture types with different efficiency and software effort. One architecture may run many phases, but not at equal utilization. The goal is therefore **fit**, not capability: which architecture meets the objective with acceptable energy, cost, predictability, and lifecycle burden?
+
+The running example from Chapter 2 gives these questions immediate content. The document assistant’s prefill phase answers them one way (abundant parallelism, regular reuse, batchable, throughput objective), its decode phase another (a short dependency frontier, streamed weight and KV state, a latency objective—the worked bound of §2.5), and its retrieval stage a third (irregular index access, large cold state, bounded lookup time). Three different contract sets inside one product is the normal condition, not a corner case, and it is why heterogeneous systems rather than single winners populate the rest of this study.
 
 ### Table 3.1 — Workload signature to architectural question
 
@@ -163,7 +167,7 @@ The compiler must express the iteration space, dependencies, legal reorderings, 
 
 ## 3.5 Memory Systems: Placement, Movement, and Consistency
 
-Arithmetic consumes operands; the memory system determines whether they arrive at the required rate, latency, and energy. “Memory” is not one resource. Registers, local SRAM, caches, device memory, shared system memory, host memory, remote memory, and storage differ in capacity, bandwidth, access granularity, latency, energy, ownership, consistency, and failure behavior.
+Arithmetic consumes operands; the memory system determines whether they arrive at the required rate, latency, and energy. “Memory” is not one resource. Registers, local SRAM, caches, device memory, shared system memory, host memory, remote memory, and storage differ in capacity, bandwidth, access granularity, latency, energy, ownership, consistency, and failure behavior. This section is the survey’s canonical treatment of memory contracts; later chapters instantiate it—the CPU–GPU boundary in §5.8, accelerator families in Chapter 6—rather than restating it.
 
 ### Capacity, bandwidth, and latency are different constraints
 
@@ -225,6 +229,8 @@ Datacenter accelerators emphasize high-bandwidth device memory, model residency,
 | Oversubscription | Natural eviction, but possible thrashing | Explicit spill, retile, or fallback required |
 | Multi-tenancy | Shared capacity and interference need control | Partitioning is explicit but may waste reserved space |
 | Best fit | Evolving, irregular, or general workloads | Stable mappings with predictable reuse |
+
+Table 3.3 states the two contracts; the quantitative and interacting costs of choosing between them under real stressors are Chapter 4’s subject (§4.2 and Table 4.3).
 
 [**Figure 3.4 placeholder — Memory as a contract, not a stack of capacities.** Show registers, distributed SRAM or scratchpad, caches, device or shared DRAM, host or remote memory, and storage. Annotate each level with capacity, latency, bandwidth, access granularity, energy, ownership, consistency, and predictability. Overlay cache-managed, scratchpad-managed, and unified-address paths for datacenter, mobile, and real-time embedded examples.]
 
@@ -394,35 +400,17 @@ Datacenters make accelerator-to-accelerator and rack networking part of model ex
 
 ## 3.10 Architectural Principles Across the Compute Continuum
 
-The principles above recur across deployment classes, but the preferred contract differs.
+The principles above recur across deployment classes, but the preferred contract differs. Rather than repeating a deployment-class matrix here, the survey maintains one canonical table of stressor priorities across the continuum in Chapter 4 (Table 4.2), with Chapter 2’s Table 2.2 playing the same role at the workload level. At the contract level the differences reduce to a few memorable asymmetries: hyperscale systems buy predictability with headroom and software investment; enterprise systems buy manageability with generality; mobile systems buy energy with narrower contracts and explicit power domains; embedded systems buy determinism with reservation and validation.
 
-### Table 3.4 — Architectural contracts across deployment classes
-
-| Contract | Hyperscale/datacenter | Enterprise/private infrastructure | Client/mobile | Embedded/automotive/robotics |
-|---|---|---|---|---|
-| Execution | Wide throughput plus flexible kernels and specialized units | Consolidated heterogeneous execution sized for variable demand | Batch-one efficiency, low overhead, power-gated engines | Deterministic pipelines, control handling, bounded service |
-| Parallelism | Across tensors, devices, jobs, and fleet | Across local services and tenants with less statistical multiplexing | Within one interaction and among local functions | Across sensor and control pipelines under priority constraints |
-| Dataflow | Large tiles, model partitioning, explicit collective overlap | Stable private models, right-sized mappings, manageable variants | Shared-memory tiling, minimized copies and wakeups | Streaming and near-sensor flows with bounded buffers |
-| Memory | HBM or large device memory, distributed state, scale-up access | Local model/index residency, tiering, lifecycle manageability | Shared LPDDR, limited SRAM, system contention | Explicit SRAM, bounded DMA, local maps and safety state |
-| Precision | Aggressive mixed precision when time-to-quality permits | Stable supported formats across deployed model portfolio | Quantized inference under quality and coverage constraints | Validated fixed or mixed formats with deterministic behavior |
-| Scheduling | Fleet placement, batching, sharing, headroom, failure recovery | Consolidation and SLOs with smaller queues and support teams | Foreground priority, thermal policy, power domains | Deadline, preemption, isolation, safe fallback |
-| Software | Large compiler/runtime investment amortized at scale | Portability, manageability, and long support life | OS-integrated graph partitioning and app lifecycle | Timing analysis, certification, controlled updates |
-| Communication | On-chip through rack-scale collectives | Smaller fabrics, private data locality, operational simplicity | On-chip interconnect, shared memory, sensor and media paths | Time-aware sensor and actuator communication |
-
-Several ideas migrate in both directions. Explicit local memory and power gating developed under constrained energy can inform datacenter efficiency. Datacenter compiler IRs and telemetry can improve smaller heterogeneous systems. The implementation still changes because the economic and physical envelopes differ.
+Several ideas migrate in both directions across the continuum. Explicit local memory and power gating developed under constrained energy can inform datacenter efficiency. Datacenter compiler IRs and telemetry can improve smaller heterogeneous systems. The implementation still changes because the economic and physical envelopes differ.
 
 ## 3.11 Engineering Takeaways
 
-- A workload signature constrains execution, data placement, numerical behavior, scheduling, communication, and software simultaneously; therefore, an accelerator should be evaluated as a collection of contracts, not as an arithmetic unit with a peak operation rate.
-- Scalar, vector, SIMT, spatial, reconfigurable, and fixed-function models retain different amounts of dynamic machinery, so specialization improves efficiency by exploiting assumptions and transferring responsibility rather than by creating universally faster execution.
-- Total operation count does not reveal ready parallel work over time; thus, execution width must be matched to dependency depth, admissible batching, work variance, and deployment latency.
-- Dataflow determines which values remain local and which hierarchy levels carry traffic, which means the same arithmetic can have materially different utilization and energy under different mappings.
-- Caches discover reuse dynamically while scratchpads require explicit placement; the choice therefore trades transparency and adaptability against predictability, storage efficiency, and software burden.
-- Shared addressability does not guarantee uniform latency, bandwidth, residency, coherence, or isolation, so system architects must specify the complete memory contract for every engine boundary.
-- Numerical width, range, accumulation, rounding, and conversion jointly determine quality and performance; accordingly, precision support should be evaluated as an end-to-end numerical and memory path, not a TOPS label.
-- Scheduling decisions span compiler, device, runtime, driver, OS, application, and cluster layers, so priority, backpressure, observability, and failure semantics must cross those layers if service objectives are to hold.
-- Compiler coverage can be functionally complete while inserting costly copies, conversions, padding, or fallback; therefore, useful programmability is measured by end-to-end mapping quality and lifecycle support.
-- Communication patterns and failure domains change from on-chip links to scale-out networks, making interconnect and collectives part of the execution architecture whenever state is distributed.
-- The same principles recur across the compute continuum with different objectives; architectural ideas can therefore be reused, but their physical organization and software contracts must be retuned for each deployment envelope.
+- An accelerator is a set of contracts—execution, data placement, numerical behavior, scheduling, communication, and software—and evaluation must cover all six, because specialization transfers responsibility among them rather than removing it.
+- Execution models differ in how much dynamic machinery they retain; each model’s efficiency claim is conditional on the workload honoring its assumptions, so there is no universally faster execution model.
+- Available parallelism is the ready frontier over time, not the total operation count, which means provisioned width must be matched to dependency depth, admissible batching, and the deployment’s latency policy.
+- Dataflow and mapping decide which operands stay local and which hierarchy levels carry traffic, so identical arithmetic can differ materially in utilization and energy under different mappings.
+- Memory must be specified as a complete contract—addressability, residency, consistency, coherence, migration, concurrency, and isolation—at every engine boundary; a shared address by itself guarantees none of these properties.
+- Scheduling and compilation span layers from compiler to cluster; priority, backpressure, and observability must cross those layers, and useful programmability is measured by end-to-end mapping quality and lifecycle support, not operator counts.
 
 Chapter 4 now applies these principles under pressure. It examines what happens when locality is incomplete, parallelism is insufficient, communication becomes visible, resources interfere, deadlines bound scheduling freedom, energy limits active hardware, or failures interrupt a distributed computation. Those conflicts produce the design tradeoffs that later explain the diversity of CPUs, GPUs, domain-specific accelerators, memory-centric systems, and reconfigurable hardware.
