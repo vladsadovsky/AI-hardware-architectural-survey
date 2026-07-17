@@ -11,7 +11,7 @@ The paper uses one consolidated reference list placed after all chapters and app
 5. X. Fan, W.-D. Weber, and L. A. Barroso, [“Power Provisioning for a Warehouse-sized Computer,”](https://research.google/pubs/power-provisioning-for-a-warehouse-sized-computer/) *Proceedings of ISCA*, 2007.
 6. A. Verma et al., [“Large-scale Cluster Management at Google with Borg,”](https://research.google/pubs/large-scale-cluster-management-at-google-with-borg/) *Proceedings of EuroSys*, 2015.
 7. S. Dev et al., [“Autonomous Warehouse-Scale Computers,”](https://research.google/pubs/autonomous-warehouse-scale-computers/) *Proceedings of DAC*, 2020.
-8. NVIDIA, [“CUDA Programming Guide: Introduction,”](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/introduction.html) and [“Programming Model,”](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html).
+8. NVIDIA, [“CUDA Programming Guide: Introduction,”](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/introduction.html), [“Programming Model,”](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html), and [“Writing CUDA SIMT Kernels,”](https://docs.nvidia.com/cuda/archive/13.1.1/cuda-programming-guide/02-basics/writing-cuda-kernels.html).
 9. A. Krizhevsky, I. Sutskever, and G. E. Hinton, [“ImageNet Classification with Deep Convolutional Neural Networks,”](https://papers.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf) *Advances in Neural Information Processing Systems 25*, 2012.
 10. Y.-H. Chen et al., [“Eyeriss: An Energy-Efficient Reconfigurable Accelerator for Deep Convolutional Neural Networks,”](https://dspace.mit.edu/bitstream/handle/1721.1/101151/eyeriss_isscc_2016.pdf) *ISSCC*, 2016.
 11. Z. Du et al., [“ShiDianNao: Shifting Vision Processing Closer to the Sensor,”](https://www.epfl.ch/labs/lap/wp-content/uploads/2018/05/DuJun15_ShiDianNaoShiftingVisionProcessingCloserToTheSensor_ISCA15.pdf) *Proceedings of ISCA*, 2015.
@@ -35,5 +35,44 @@ The paper uses one consolidated reference list placed after all chapters and app
 10. W. Fedus, B. Zoph, and N. Shazeer, [“Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity,”](https://arxiv.org/abs/2101.03961) *Journal of Machine Learning Research*, 23, 2022.
 11. J. Ho, A. Jain, and P. Abbeel, [“Denoising Diffusion Probabilistic Models,”](https://arxiv.org/abs/2006.11239) *Advances in Neural Information Processing Systems 33*, 2020.
 12. MLCommons, [“MLPerf Automotive Benchmark Suite,”](https://mlcommons.org/benchmarks/mlperf-automotive/), scenario definitions and latency metrics.
+13. C. Ding and Y. Zhong, [“Predicting Whole-Program Locality through Reuse Distance Analysis,”](https://doi.org/10.1145/780822.781159) *Proceedings of PLDI*, 2003.
+14. N. Bell and M. Garland, [“Sparse Matrix-Vector Multiplication on Multicore and Accelerators,”](https://research.nvidia.com/publication/2010-12_sparse-matrix-vector-multiplication-multicore-and-accelerators) NVIDIA Technical Report NVR-2010-004, 2010.
+15. M. Assran et al., [“V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning,”](https://ai.meta.com/research/publications/v-jepa-2-self-supervised-video-models-enable-understanding-prediction-and-planning/) 2025. Research system; used as evidence of an emerging workload direction, not an established future architecture.
+16. K. T. Malladi et al., [“Towards Energy-Proportional Datacenter Memory with Mobile DRAM,”](https://mast.stanford.edu/pubs/towards_energy_proportional_datacenter_memory_with_mobile_dram/) *Proceedings of ISCA*, 2012.
+17. A. Yazdanbakhsh, B. Akin, and K. S. Seshadri, [“An Evaluation of Edge TPU Accelerators for Convolutional Neural Networks,”](https://research.google/pubs/an-evaluation-of-edge-tpu-accelerators-for-convolutional-neural-networks/) 2021.
 
 Sources principally listed under Chapter 1 but also used as background in Chapter 2 include the Roofline model (Chapter 1, Ref. 2), Eyeriss data-movement analysis (Chapter 1, Ref. 10), ShiDianNao near-sensor processing (Chapter 1, Ref. 11), and *Attention Is All You Need* (Chapter 1, Ref. 15).
+
+## Chapter 3 — Fundamental Architectural Principles
+
+1. H. T. Kung, [“Why Systolic Architectures?”](https://doi.org/10.1109/MC.1982.1653825) *Computer*, 15(1), 1982.
+2. A. Parashar et al., [“Timeloop: A Systematic Approach to DNN Accelerator Evaluation,”](https://doi.org/10.1109/ISPASS.2019.00042) *Proceedings of ISPASS*, 2019.
+3. H. Kwon et al., [“Understanding Reuse, Performance, and Hardware Cost of DNN Dataflows: A Data-Centric Approach,”](https://doi.org/10.1145/3352460.3358252) *Proceedings of MICRO-52*, 2019.
+4. P. Micikevicius et al., [“Mixed Precision Training,”](https://iclr.cc/virtual/2018/poster/288) *Proceedings of ICLR*, 2018.
+5. D. Kalamkar et al., [“A Study of BFLOAT16 for Deep Learning Training,”](https://arxiv.org/abs/1905.12322) 2019.
+6. T. Chen et al., [“TVM: An Automated End-to-End Optimizing Compiler for Deep Learning,”](https://www.usenix.org/conference/osdi18/presentation/chen) *Proceedings of OSDI*, 2018.
+7. C. Lattner et al., [“MLIR: Scaling Compiler Infrastructure for Domain Specific Computation,”](https://research.google/pubs/mlir-scaling-compiler-infrastructure-for-domain-specific-computation/) *Proceedings of CGO*, 2021.
+8. J. Ragan-Kelley et al., [“Halide: A Language and Compiler for Optimizing Parallelism, Locality, and Recomputation in Image Processing Pipelines,”](https://people.csail.mit.edu/jrk/halide12/) *Proceedings of PLDI*, 2013.
+9. M. Cho, U. Finkler, D. Kung, and H. Hunter, [“BlueConnect: Decomposing All-Reduce for Deep Learning on Heterogeneous Network Hierarchy,”](https://proceedings.mlsys.org/paper_files/paper/2019/hash/0c8abcf158ed12d0dd94480681186fda-Abstract.html) *Proceedings of Machine Learning and Systems 1*, 2019.
+
+Sources principally listed under earlier chapters but also used in Chapter 3 include CUDA’s SIMT programming model (Chapter 1, Ref. 8), Eyeriss dataflow analysis (Chapter 1, Ref. 10), and PagedAttention (Chapter 2, Ref. 3).
+
+## Chapter 4 — Architectural Stressors and Design Tradeoffs
+
+1. M. Horowitz, [“Computing’s Energy Problem (and What We Can Do About It),”](https://doi.org/10.1109/ISSCC.2014.6757323) *ISSCC*, 2014.
+2. Y. Zu et al., [“Resiliency at Scale: Managing Google’s TPUv4 Machine Learning Supercomputer,”](https://www.usenix.org/conference/nsdi24/presentation/zu) *Proceedings of NSDI*, 2024.
+
+Sources principally listed under earlier chapters but also used in Chapter 4 include energy-proportional computing and the first production TPU analysis (Chapter 1, Refs. 4 and 12); reuse-distance analysis and mobile-DRAM energy proportionality (Chapter 2, Refs. 13 and 16); and TVM, MLIR, and BlueConnect (Chapter 3, Refs. 6, 7, and 9).
+
+## Chapter 5 — CPUs and GPUs
+
+1. Intel, [*Intel 64 and IA-32 Architectures Optimization Reference Manual*](https://www.intel.com/content/www/us/en/developer/articles/technical/intel64-and-ia32-architectures-optimization.html), current documentation.
+2. G. M. Amdahl, [“Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities,”](https://doi.org/10.1145/1465482.1465560) *Proceedings of the AFIPS Spring Joint Computer Conference*, 1967.
+3. N. Stephens et al., [“The ARM Scalable Vector Extension,”](https://developer.arm.com/community/arm-research/b/articles/posts/the-arm-scalable-vector-extension-sve) *IEEE Micro*, 37(2), 2017.
+4. E. Lindholm, J. Nickolls, S. Oberman, and J. Montrym, [“NVIDIA Tesla: A Unified Graphics and Computing Architecture,”](https://doi.org/10.1109/MM.2008.31) *IEEE Micro*, 28(2), 2008.
+5. J. Nickolls, I. Buck, M. Garland, and K. Skadron, [“Scalable Parallel Programming with CUDA,”](https://doi.org/10.1145/1365490.1365500) *ACM Queue*, 6(2), 2008.
+6. S. Chetlur et al., [“cuDNN: Efficient Primitives for Deep Learning,”](https://arxiv.org/abs/1410.0759) 2014.
+7. AMD, [“Understanding the HIP Programming Model,”](https://rocm.docs.amd.com/projects/HIP/en/latest/understand/programming_model.html) *ROCm Documentation*.
+8. NVIDIA, [*NVIDIA Tesla V100 GPU Architecture*](https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/tesla-product-literature/volta-architecture-whitepaper.pdf), architecture whitepaper, 2017. Vendor architecture source; used to document the integration and programming exposure of early GPU tensor cores, not as independent performance validation.
+
+Sources principally listed under earlier chapters but also used in Chapter 5 include CUDA’s programming model (Chapter 1, Ref. 8), AlexNet (Chapter 1, Ref. 9), TVM and MLIR (Chapter 3, Refs. 6 and 7), and the workload and GPU-efficiency analysis developed throughout Chapters 2 through 4.

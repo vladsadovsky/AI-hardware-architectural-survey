@@ -103,6 +103,8 @@ Give deeper-than-average treatment to software-visible limits, including:
 
 Representative workloads include training, fine-tuning, transformer prefill and decode, recommendation, retrieval and embeddings, mixture of experts, sparse and graph computation, vision and video, multimodal inference, diffusion, scientific AI, edge/client inference, robotics, and sensor fusion.
 
+Characterize workload phases through signatures covering operation and shape distributions, arithmetic intensity, working set and reuse distance, spatial access, sparsity structure, dependency and control behavior, state, arrivals and service time, communication, quality, and deployment limits. Use stochastic-process formalization only as optional deeper treatment in an appendix.
+
 ## Current Structure
 
 The accepted provisional outline is architecture-first and workload-driven:
@@ -141,11 +143,11 @@ Appendices cover terminology, formal performance models, microarchitectural deep
 
 ### Mandatory compute-continuum rule
 
-Every substantive chapter must cover hyperscale/datacenter, enterprise/edge infrastructure, client/mobile, and embedded/automotive/robotics implications wherever technically relevant. Coverage should be integrated concept by concept rather than imposed as repetitive deployment-specific chapter partitions. Datacenter analysis emphasizes useful utilization, energy, cost, throughput, and service objectives; mobile emphasizes energy, battery, thermals, responsiveness, privacy, and SoC scheduling; embedded and robotics emphasize bounded latency, determinism, energy, SWaP-C, integration, safety, and connectivity constraints. Utilization is a means to useful work per dollar and joule under service and reliability constraints, not an end in itself.
+Every substantive chapter must cover hyperscale/datacenter, enterprise/edge infrastructure, client/mobile, and embedded/automotive/robotics implications wherever technically relevant. Coverage should be integrated concept by concept rather than imposed as repetitive deployment-specific chapter partitions. Datacenter analysis emphasizes useful utilization, energy, cost, throughput, and service objectives; mobile emphasizes energy, battery, thermals, responsiveness, privacy, and SoC scheduling; embedded and robotics emphasize bounded latency, determinism, energy, SWaP-C, integration, safety, and connectivity constraints. Utilization is a means to useful work per dollar and joule under service and reliability constraints, not an end in itself. Enterprise private AI may become datacenter-like when governance or data-domain protection motivates a local cluster, while retaining smaller-scale utilization, staffing, support, and lifecycle economics. Non-mobile edge remains an intermediate class.
 
 ### Mandatory causal traceability rule
 
-Workload analysis must explicitly connect real-world problem, workload behavior, architectural bottleneck, and direct system consequence. Every material bottleneck must name the scalability, utilization, latency, energy/heat, memory, cost, determinism, reliability, deadline, or quality consequence it produces and the deployment conditions under which the relationship applies. Do not present disconnected inventories of problems, workloads, bottlenecks, and consequences.
+Workload analysis must explicitly connect real-world problem, workload behavior, software mitigation, residual architectural bound, direct system consequence, hardware implication, and economic trigger. Every material bottleneck must name the scalability, utilization, latency, energy/heat, memory, cost, determinism, reliability, deadline, or quality consequence it produces and the deployment conditions under which the relationship applies. Hardware “necessity” is conditional on a specified objective and must include lifecycle volume, integration and software cost, flexibility, and risk. Do not present disconnected inventories of problems, workloads, bottlenecks, and consequences.
 
 ## Canonical Artifacts and Current State
 
@@ -155,7 +157,10 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 - `PROJECT.md` — governing collaboration and repository workflow instructions
 - `chapters/preface.md` — approved Preface; canonical unless subsequently revised
 - `chapters/ch01-historical-context.md` — revised full Chapter 1 draft awaiting review; approved tables are included and five approved figures remain placeholders
-- `chapters/ch02-workload-characteristics.md` — full Chapter 2 workload-analysis draft awaiting review; uses explicit problem-to-behavior-to-bottleneck-to-consequence mappings and contains no proposed figures
+- `chapters/ch02-workload-characteristics.md` — expanded Chapter 2 workload-analysis draft awaiting review; includes workload signatures, per-workload software ceilings and hardware conclusions, GPU-efficiency limits, future-world-model analysis, cross-continuum reuse, four tables, and six figure placeholders
+- `chapters/ch03-fundamental-architectural-principles.md` — Chapter 3 draft awaiting review; translates workload signatures into execution, data-placement, numerical, scheduling, communication, and software contracts, with four tables and six figure placeholders
+- `chapters/ch04-architectural-stressors-and-tradeoffs.md` — Chapter 4 draft awaiting review; applies explicit scenario-to-response chains to interacting architectural stressors across the compute continuum, with three tables and eight figure placeholders
+- `chapters/ch05-cpus-and-gpus.md` — Chapter 5 draft awaiting review; establishes the CPU–GPU system baseline, explains GPU platform dominance, defines the limits of the GPU efficiency envelope without implying inability, and bridges explicitly to Chapter 6, with five tables and four figure placeholders
 - `figures/` — currently empty
 - `references/references.md` — consolidated paper-level reference list, organized by chapter and intended for placement at the end of the assembled paper
 - `discussions/thread_bukatin-sparse-matrix-gpu-shared_2026-07-15.md` — supporting technical discussion, not governing methodology
@@ -164,9 +169,12 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 
 - Review and stabilize the Master Structural Outline before declaring v1.0.
 - Review the revised Chapter 1 text and included tables; approved figures remain placeholders pending later production.
-- Review Chapter 2 for workload coverage, causal consistency, depth, and style after Chapter 1 establishes the manuscript template.
+- Review the expanded Chapter 2 for workload coverage, causal consistency, economic reasoning, depth, and style; figures remain placeholders pending production.
+- Review Chapter 3 for conceptual depth, terminology, separation of architectural abstraction levels, and continuity from the Chapter 2 workload taxonomy.
+- Review Chapter 4 for complete causal chains, treatment of interacting tradeoffs, compute-continuum coverage, and an appropriately gradual lead-in to Chapters 5 and 6.
+- Review Chapter 5 for CPU/GPU balance, accuracy of the platform-level CUDA treatment, economic framing of further specialization, and readiness of its questions to structure Chapter 6.
 - Review the Preface for consistency and completeness if later manuscript work expands or changes relevant content.
-- Develop later chapters only after the current document is reviewed.
+- Develop later chapters only after the current drafts are reviewed.
 - Create figures, tables, references, and presentation-extraction material as manuscript work produces them; do not let companion artifacts drive manuscript structure.
 
 ## Gemini Archive Assessment

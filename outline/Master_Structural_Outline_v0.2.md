@@ -44,6 +44,14 @@ Compute Continuum → Future Directions
 
 Goal: Explain AI workloads from a systems engineering perspective.
 
+Analytical framework:
+
+-   Workload-signature taxonomy based on computation, memory and access
+    structure, temporal behavior, communication, and deployment constraints
+-   Optional stochastic-process formalization deferred to an appendix
+-   Conditional hardware-necessity test: residual technical bound, direct
+    consequence, hardware lever, and lifecycle economic threshold
+
 For each workload:
 
 1.  Computational characteristics
@@ -92,6 +100,13 @@ Cross-cutting bottlenecks:
 -   Energy efficiency
 -   SWaP-C
 
+Transition synthesis:
+
+-   GPU efficiency envelope and workload phases that fall outside it
+-   Future-workload stress test, including predictive world models
+-   Reusable architectural principles and divergent implementations across
+    datacenter, enterprise, non-mobile edge, mobile, and embedded systems
+
 Representative deployment analysis:
 
 Phone → Laptop → Workstation → Enterprise Edge → Datacenter →
@@ -103,14 +118,36 @@ Hyperscaler
 
 ## Chapter 3. Fundamental Architectural Principles
 
+Goal: Translate Chapter 2 workload signatures into the architectural
+contracts used to reason about hardware, without selecting product families.
+
+-   Workload signatures mapped to execution, data-placement, numerical,
+    scheduling, communication, and software contracts
 -   Execution models
--   Parallelism
--   Dataflow
--   Memory systems
--   Precision evolution
--   Scheduling
--   Compiler interaction
--   Communication
+    -   Scalar and superscalar
+    -   Vector and SIMD
+    -   SIMT
+    -   Spatial and dataflow
+    -   Systolic, reconfigurable, and fixed-function structures
+    -   Heterogeneous combinations
+-   Parallelism as a multidimensional property
+    -   Instruction, data, thread, task, and pipeline parallelism
+    -   Model, data, device, and fleet-level parallelism
+    -   Available parallelism versus provisioned execution width
+-   Dataflow and mapping
+    -   Spatial and temporal mapping
+    -   Stationary and streaming dataflows
+    -   Dense, sparse, graph, and routed workloads
+-   Memory-system contracts
+    -   Capacity, bandwidth, latency, locality, and placement
+    -   Caches, scratchpads, registers, and distributed local state
+    -   Shared, unified, coherent, and virtual memory
+-   Precision as a storage, arithmetic, accumulation, conversion, and
+    numerical-quality contract
+-   Static, dynamic, and hybrid scheduling
+-   Compiler, runtime, driver, firmware, and operating-system interaction
+-   On-chip, device, package, collective, and system communication
+-   Architectural-contract comparison across the AI compute continuum
 
 **Engineering Takeaways**
 
@@ -118,26 +155,30 @@ Hyperscaler
 
 ## Chapter 4. Architectural Stressors and Design Tradeoffs
 
-Ground every topic in real engineering scenarios.
+Goal: Apply Chapter 3's architectural vocabulary to interacting system
+stressors and make the cost of each architectural response explicit, while
+deferring architecture-family and product comparison to Chapters 5 and 6.
+
+Required analytical chain:
+
+Real-world scenario → Workload behavior → Software mitigation → Residual
+architectural limit → Direct consequence → Architectural response → New
+tradeoff
 
 Topics:
 
--   Data movement
--   Locality
--   Bandwidth
--   Synchronization
--   Network communication
--   Utilization
--   Determinism
--   Programmability
--   Scalability
--   Energy
--   Reliability
-
-For every stressor:
-
-Real workload → Software mitigation → Hardware limitation →
-Architectural response
+-   Interaction among stressors; useful utilization versus nominal activity
+-   Data movement, locality, and useful sustained bandwidth
+-   Parallelism, utilization, latency, and queueing
+-   Synchronization, communication, and scalability
+-   Determinism, dynamism, control, and bounded execution
+-   Programmability, portability, and the specialization budget
+-   Energy, power, and thermal constraints
+-   Reliability, availability, serviceability, and safety
+-   Silicon, system, lifecycle, and flexibility economics
+-   Stressor priorities and response costs across the AI compute continuum
+-   Design questions that lead to architecture families without surveying
+    their current commercial implementations
 
 **Engineering Takeaways**
 
@@ -147,11 +188,38 @@ Architectural response
 
 ## Chapter 5. CPUs and GPUs
 
+Goal: Establish the CPU–GPU system as the broad programmable baseline,
+explain why GPU computing became the dominant general AI acceleration
+platform, and define the conditional efficiency and economic limits that
+motivate Chapter 6.
+
+-   CPU and GPU architectural centers of gravity
 -   Modern CPUs
+    -   Dynamic scheduling, prediction, caches, coherence, and system role
+    -   Vector and matrix extensions
+    -   Multicore, NUMA, and heterogeneous cores
+    -   CPU roles in end-to-end AI paths
 -   Evolution of GPU computing
--   CUDA ecosystem
--   Why GPUs became dominant
--   Why GPUs alone are no longer sufficient
+    -   Fixed and programmable graphics pipelines
+    -   Unified programmable architectures and general kernels
+    -   AI-era matrix operations and system scaling
+-   GPU architectural contract
+    -   Hierarchical parallelism and SIMT
+    -   Latency tolerance, residency, and occupancy
+    -   Coalescing, locality, and memory hierarchy
+    -   Matrix specialization within a programmable GPU
+-   CUDA as a platform
+    -   Programming and execution model
+    -   Compatibility, libraries, compilers, frameworks, and tools
+    -   Software capital, portability, and operational maturity
+-   Why GPUs became the dominant broad AI accelerator
+-   CPU–GPU system boundaries
+    -   Discrete and shared-memory integration
+    -   Submission, synchronization, power, and recovery
+-   Conditions that narrow the GPU efficiency envelope
+-   Precise interpretation of why GPUs alone are not sufficient
+-   CPU and GPU roles across the AI compute continuum
+-   Design questions that lead into domain-specific architecture families
 
 **Engineering Takeaways**
 

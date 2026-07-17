@@ -49,9 +49,13 @@ Elaborate only when asked.
 - Use minimal mathematics in the main text. Put formal methods, derivations, and further links in appendices.
 - Organize analysis around workloads and architectural approaches, not vendor chronology.
 - Explain software optimization and its limits before presenting a hardware response.
+- Treat hardware “necessity” as conditional and economic as well as technical: identify the residual bound, direct consequence, hardware lever, workload stability or volume, and lifecycle cost before concluding that specialization is justified.
+- Characterize workload phases by signatures—computation and shapes, memory and access structure, temporal behavior, state, communication, quality, and deployment constraints—rather than relying on model-family labels alone. Keep formal stochastic-process treatment in appendices unless it is essential to the argument.
+- Describe GPU limitations as movement outside an efficiency envelope involving parallelism, coalescing, lane regularity, occupancy, batchability, and amortized overhead. Do not imply that GPUs require stricter cache coherence or cannot execute irregular workloads.
 - Separate verified facts, analysis, author assessment, announced products, development work, reporting, and speculation.
 - Avoid unsupported causal claims, vendor advocacy, vague superlatives, and comparisons without measurement boundaries.
 - Preserve the two-transition thesis and AI compute continuum unless the user explicitly revises them.
+- Write Engineering Takeaways as concise natural-language bullets with an explicit causal connector such as “therefore,” “so,” “thus,” or “which means.” Do not repeat labels such as “Observation” and “Conclusion” in every bullet.
 
 ### Mandatory problem-to-consequence traceability
 
@@ -89,6 +93,8 @@ For each major concept or transition, state:
 
 Coverage must be integrated into the chapter's argument. Do not mechanically split every chapter into identical datacenter, mobile, and embedded sections when a concept-by-concept comparison is clearer. Before delivering a chapter draft, perform a compute-continuum coverage check and report any intentionally omitted deployment class with a reason.
 
+Treat enterprise private AI infrastructure as potentially datacenter-like when data-domain protection, governance, sovereignty, or predictable local service motivates a private cluster or “mini-datacenter.” Preserve its distinct economics: lower and more variable utilization, longer lifecycle, smaller support organization, and higher relative cost of spare capacity. Treat non-mobile edge as an intermediate deployment class whose architecture moves toward datacenter or embedded designs according to consolidation, locality, environmental, and real-time requirements.
+
 Utilization is not an isolated objective. Treat it as a means to improve useful throughput, energy efficiency, and economics while meeting latency, reliability, fairness, and capacity-headroom requirements. Avoid implying that maximum occupancy or 100 percent utilization is universally desirable.
 
 ## Sources and Verification
@@ -121,5 +127,8 @@ Utilization is not an isolated objective. Treat it as a means to improve useful 
 - Approved Preface: `chapters/preface.md`
 - Chapter 1 draft awaiting review: `chapters/ch01-historical-context.md`
 - Chapter 2 workload-characteristics draft awaiting review: `chapters/ch02-workload-characteristics.md`
+- Chapter 3 architectural-principles draft awaiting review: `chapters/ch03-fundamental-architectural-principles.md`
+- Chapter 4 architectural-stressors draft awaiting review: `chapters/ch04-architectural-stressors-and-tradeoffs.md`
+- Chapter 5 CPU-and-GPU draft awaiting review: `chapters/ch05-cpus-and-gpus.md`
 
 Update this section only when the canonical working state materially changes.
