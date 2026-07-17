@@ -53,6 +53,22 @@ Elaborate only when asked.
 - Avoid unsupported causal claims, vendor advocacy, vague superlatives, and comparisons without measurement boundaries.
 - Preserve the two-transition thesis and AI compute continuum unless the user explicitly revises them.
 
+### Mandatory problem-to-consequence traceability
+
+When describing workloads and bottlenecks, use an explicit causal chain:
+
+> Real-world problem → Workload behavior → Architectural bottleneck → Direct system consequence
+
+For every material bottleneck:
+
+- Identify the real workload or deployment problem that exposes it.
+- Describe the relevant computational, memory, communication, control-flow, or timing behavior.
+- Name the specific architectural resource or mechanism that becomes limiting.
+- State the direct consequence, such as reduced scalability or utilization; increased mean or tail latency; higher energy, heat, memory footprint, or cost; missed deadlines; reduced determinism, reliability, or quality.
+- State the deployment class and operating conditions under which the chain applies.
+- Avoid lists of workloads, bottlenecks, and consequences that are not explicitly mapped to one another.
+- Check for omitted links, contradictory mappings, and bottlenecks presented without a demonstrated consequence before delivering a chapter.
+
 ## Mandatory Compute-Continuum Coverage
 
 Every substantive chapter must explicitly evaluate its subject across the full AI compute continuum where technically relevant:
@@ -104,5 +120,6 @@ Utilization is not an isolated objective. Treat it as a means to improve useful 
 - Reusable context: `PROJECT_CONTEXT.md`
 - Approved Preface: `chapters/preface.md`
 - Chapter 1 draft awaiting review: `chapters/ch01-historical-context.md`
+- Chapter 2 workload-characteristics draft awaiting review: `chapters/ch02-workload-characteristics.md`
 
 Update this section only when the canonical working state materially changes.

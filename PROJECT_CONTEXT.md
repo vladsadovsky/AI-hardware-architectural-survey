@@ -143,6 +143,10 @@ Appendices cover terminology, formal performance models, microarchitectural deep
 
 Every substantive chapter must cover hyperscale/datacenter, enterprise/edge infrastructure, client/mobile, and embedded/automotive/robotics implications wherever technically relevant. Coverage should be integrated concept by concept rather than imposed as repetitive deployment-specific chapter partitions. Datacenter analysis emphasizes useful utilization, energy, cost, throughput, and service objectives; mobile emphasizes energy, battery, thermals, responsiveness, privacy, and SoC scheduling; embedded and robotics emphasize bounded latency, determinism, energy, SWaP-C, integration, safety, and connectivity constraints. Utilization is a means to useful work per dollar and joule under service and reliability constraints, not an end in itself.
 
+### Mandatory causal traceability rule
+
+Workload analysis must explicitly connect real-world problem, workload behavior, architectural bottleneck, and direct system consequence. Every material bottleneck must name the scalability, utilization, latency, energy/heat, memory, cost, determinism, reliability, deadline, or quality consequence it produces and the deployment conditions under which the relationship applies. Do not present disconnected inventories of problems, workloads, bottlenecks, and consequences.
+
 ## Canonical Artifacts and Current State
 
 - `charter/Project_Charter_and_Research_Methodology_v0.2.md` — governing scope, thesis, methodology, evidence rules, and writing standards
@@ -151,6 +155,7 @@ Every substantive chapter must cover hyperscale/datacenter, enterprise/edge infr
 - `PROJECT.md` — governing collaboration and repository workflow instructions
 - `chapters/preface.md` — approved Preface; canonical unless subsequently revised
 - `chapters/ch01-historical-context.md` — revised full Chapter 1 draft awaiting review; approved tables are included and five approved figures remain placeholders
+- `chapters/ch02-workload-characteristics.md` — full Chapter 2 workload-analysis draft awaiting review; uses explicit problem-to-behavior-to-bottleneck-to-consequence mappings and contains no proposed figures
 - `figures/` — currently empty
 - `references/references.md` — consolidated paper-level reference list, organized by chapter and intended for placement at the end of the assembled paper
 - `discussions/thread_bukatin-sparse-matrix-gpu-shared_2026-07-15.md` — supporting technical discussion, not governing methodology
@@ -159,6 +164,7 @@ Every substantive chapter must cover hyperscale/datacenter, enterprise/edge infr
 
 - Review and stabilize the Master Structural Outline before declaring v1.0.
 - Review the revised Chapter 1 text and included tables; approved figures remain placeholders pending later production.
+- Review Chapter 2 for workload coverage, causal consistency, depth, and style after Chapter 1 establishes the manuscript template.
 - Review the Preface for consistency and completeness if later manuscript work expands or changes relevant content.
 - Develop later chapters only after the current document is reviewed.
 - Create figures, tables, references, and presentation-extraction material as manuscript work produces them; do not let companion artifacts drive manuscript structure.
