@@ -1,6 +1,6 @@
 # Survey of Modern AI Compute Accelerator Hardware
 
-## Master Structural Outline v0.2 (Architecture-First, Workload-Driven)
+## Master Structural Outline (Architecture-First, Workload-Driven)
 
 **Core Narrative**
 
@@ -54,12 +54,12 @@ Analytical framework:
 
 For each workload:
 
-1.  Computational characteristics
-2.  Software optimization techniques
-3.  Why software eventually stops scaling
-4.  Architectural bottlenecks
-5.  Emerging hardware responses
-6.  Remaining research challenges
+- Computational characteristics
+- Software optimization techniques
+- Why software eventually stops scaling
+- Architectural bottlenecks
+- Emerging hardware responses
+- Remaining research challenges
 
 Workloads:
 
@@ -227,7 +227,7 @@ motivate Chapter 6.
 
 ## Chapter 6. Domain-Specific AI Accelerators Across the Compute Continuum (Cornerstone Chapter)
 
-Architectural families (taxonomy updated 2026-07-17 with the Chapter 6 draft; presented as microarchitectural organizations per Charter §13):
+Architectural families (presented as microarchitectural organizations per Charter §13):
 
 -   Systolic arrays (mechanism family; presented before the device classes built on it)
 -   Tensor processors
@@ -459,7 +459,6 @@ G. Economic Primer: When AI Acceleration Pays
         software support, and model-change risk
 -   Representative datacenter and mobile break-even examples
 -   Architect-to-business decision checklist
--   Developed after Chapter 6 and finalized after Chapter 10
 
 ------------------------------------------------------------------------
 

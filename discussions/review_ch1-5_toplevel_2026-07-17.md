@@ -1,4 +1,4 @@
-# Top-Level Critical Review — Preface and Chapters 1–5
+# Fable: Top-Level Critical Review — Preface and Chapters 1–5
 
 **Date:** 2026-07-17
 **Scope:** preface.md, ch01–ch05, read against the Charter v0.2, Master Outline v0.2, and PROJECT.md standards.

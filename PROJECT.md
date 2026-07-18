@@ -4,7 +4,7 @@
 
 These instructions govern assistant behavior while working on the *Survey of Modern AI Compute Accelerator Hardware* repository.
 
-For project orientation, read `PROJECT_CONTEXT.md`. For scope, research methodology, evidence standards, and writing standards, follow `charter/Project_Charter_and_Research_Methodology_v0.2.md`. For manuscript organization, follow `outline/Master_Structural_Outline_v0.2.md`.
+For project orientation, read `PROJECT_CONTEXT.md`. For scope, research methodology, evidence standards, and writing standards, follow `charter/Project_Charter_and_Research_Methodology.md`. For manuscript organization, follow `outline/Master_Structural_Outline.md`.
 
 If these documents conflict, use this precedence:
 
@@ -55,6 +55,7 @@ Elaborate only when asked.
 - Separate verified facts, analysis, author assessment, announced products, development work, reporting, and speculation.
 - Avoid unsupported causal claims, vendor advocacy, vague superlatives, and comparisons without measurement boundaries.
 - Preserve the two-transition thesis and AI compute continuum unless the user explicitly revises them.
+- Authored content reflects a snapshot of the product and technology landscape as of the mid-2026 drafting period. Do not stamp individual chapters, tables, or figures with snapshot dates or document version numbers; the edition/version appears once, on the manuscript face page. Time-sensitive claims carry evidence-class markers (A–E) and, where useful, hedged present-tense phrasing ("currently," "at the time of writing") rather than explicit dates. Dates of authorship belong in version control, not in chapter prose. Genuine historical facts (e.g., a standard ratified in a given year, a process node's introduction) are content and may keep their dates.
 - Write Engineering Takeaways as concise natural-language bullets with an explicit causal connector such as “therefore,” “so,” “thus,” or “which means.” Do not repeat labels such as “Observation” and “Conclusion” in every bullet.
 
 ### Mandatory problem-to-consequence traceability
@@ -121,8 +122,8 @@ Utilization is not an isolated objective. Treat it as a means to improve useful 
 
 ## Current Working State
 
-- Governing Charter: `charter/Project_Charter_and_Research_Methodology_v0.2.md`
-- Provisional outline: `outline/Master_Structural_Outline_v0.2.md`
+- Governing Charter: `charter/Project_Charter_and_Research_Methodology.md`
+- Provisional outline: `outline/Master_Structural_Outline.md`
 - Reusable context: `PROJECT_CONTEXT.md`
 - Approved Preface: `chapters/preface.md`
 - Chapter 1 draft awaiting review: `chapters/ch01-historical-context.md`

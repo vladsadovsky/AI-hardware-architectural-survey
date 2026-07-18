@@ -151,8 +151,8 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 
 ## Canonical Artifacts and Current State
 
-- `charter/Project_Charter_and_Research_Methodology_v0.2.md` — governing scope, thesis, methodology, evidence rules, and writing standards
-- `outline/Master_Structural_Outline_v0.2.md` — accepted provisional manuscript structure
+- `charter/Project_Charter_and_Research_Methodology.md` — governing scope, thesis, methodology, evidence rules, and writing standards
+- `outline/Master_Structural_Outline.md` — accepted provisional manuscript structure
 - `PROJECT_CONTEXT.md` — concise reusable orientation and collaboration handoff
 - `PROJECT.md` — governing collaboration and repository workflow instructions
 - `chapters/preface.md` — approved Preface; canonical unless subsequently revised

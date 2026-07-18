@@ -1,4 +1,4 @@
-# Questions and Decisions Needing Author Input — 2026-07-17
+# Fable: Questions and Decisions Needing Author Input — 2026-07-18
 
 Running list from the Chapter 6–8 drafting session. None block reading the drafts; all affect finalization.
 

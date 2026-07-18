@@ -2,7 +2,7 @@
 
 ## Architectural Study of Modern AI Compute Accelerator Hardware
 
-### Version 0.2 (Draft)
+### 
 
 ## 1. Mission Statement
 
@@ -26,7 +26,7 @@ The software ecosystem did not fail in either transition. Software optimization 
 Primary objectives:
 
 - Analyze the two major software-to-hardware transitions: CPU to GPU and GPU to domain-specific acceleration.
-- Characterize modern AI workloads from a systems perspective and relate them to conventional enterprise and HPC workloads.
+- Characterize modern AI workloads from a systems perspective and relate them to conventional enterprise and HPC workloads on one side and mobile and embedded edge workloads on the other.
 - Develop a coherent, vendor-independent architectural taxonomy.
 - Connect workload behavior, software optimization, architectural bottlenecks, and hardware responses.
 - Survey significant commercial systems and credible emerging products as implementations of architectural choices.
@@ -43,7 +43,7 @@ Secondary objectives:
 
 ## 4. Intended Audience
 
-The primary audience comprises senior software engineers, software and systems architects, OS and runtime architects, performance engineers, AI infrastructure engineers, HPC engineers, interconnect designers, technical decision makers, and engineering managers.
+The primary audience comprises senior software engineers, software and systems architects, OS and runtime architects, performance engineers, AI infrastructure engineers, technical decision makers, and engineering managers.
 
 Readers are assumed to understand operating systems, parallel programming, caches, CPUs, GPUs, cloud computing, and modern AI concepts. Graduate-level computer architecture knowledge is not assumed. Mathematics shall be used only where it improves engineering understanding; formal methods and further references belong in an appendix.
 
@@ -52,11 +52,12 @@ Readers are assumed to understand operating systems, parallel programming, cache
 Included:
 
 - AI accelerator architectures and limited historical evolution.
-- Datacenter, hyperscale, enterprise, enterprise edge, workstation, desktop, laptop, mobile, embedded, robotics, and automotive AI.
+- Workloads and acceleration at datacenter, hyperscale, enterprise, enterprise edge, workstation,  laptop, mobile, embedded AI.
 - The full range of offload systems, from always-on low-power devices to rack- and cluster-scale infrastructure.
-- Workload behavior; software, compiler, runtime, OS, memory, storage, interconnect, packaging, power, thermal, and economic constraints.
+- Workload behavior; software, compiler, runtime, OS, memory, storage, interconnect, packaging, power, thermal
+- Economic constraints.
 - Shipping products, officially announced systems, publicly demonstrated prototypes, and credible development programs.
-- Selected university, startup, laboratory, and moonshot efforts in a clearly separated forward-looking treatment.
+- Selected university, startup, industrial laboratory and moonshot efforts in a clearly separated forward-looking treatment.
 
 Excluded or deferred:
 
@@ -81,7 +82,7 @@ It is organized around four connected concerns:
 
 The organizing unit is architecture rather than company. Vendors and products demonstrate how different organizations implement architectural ideas under different workload, software, economic, and deployment constraints.
 
-## 7. Design Invariants
+## 7. Paper Design Invariants
 
 ### DI-1 — Workload First
 
@@ -164,11 +165,11 @@ Shipping, announced, developmental, reported, and speculative material shall nev
 
 Compare products and systems at distinct levels:
 
-1. Silicon or package.
-2. Board or module.
-3. Server or node.
-4. Rack, pod, or appliance.
-5. Cluster or scale-out system.
+- Silicon or package.
+- Board or module.
+- Server or node.
+- Rack, pod, or appliance.
+- Cluster or scale-out system.
 
 For client and edge hardware, additionally distinguish SoC, device, desktop or workstation, embedded platform, automotive platform, and robotic system.
 

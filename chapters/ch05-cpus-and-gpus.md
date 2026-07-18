@@ -387,10 +387,10 @@ The phrase does not mean that GPUs have stopped improving, cannot execute modern
 
 There are four distinct claims:
 
-1. **A GPU is not a complete system.** CPUs, memory, storage, networking, power delivery, cooling, operating systems, and recovery remain part of every useful result.
-2. **A GPU’s generality has a cost.** Thread state, instruction delivery, address generation, caches, scheduling, and broad operator support consume area and energy that a narrower design may redirect.
-3. **GPU efficiency is conditional.** Work must supply sufficient parallelism, regularity, locality, residency, and amortization under the deployment objective.
-4. **The economic answer changes with scale.** Hyperscalers can amortize custom silicon and software across enormous volume. Mobile vendors can amortize a small accelerator across many devices and convert energy savings into battery life or features. An enterprise with modest, changing demand may rationally prefer a less efficient GPU because its software compatibility and reuse reduce total risk.
+- **A GPU is not a complete system.** CPUs, memory, storage, networking, power delivery, cooling, operating systems, and recovery remain part of every useful result.
+- **A GPU’s generality has a cost.** Thread state, instruction delivery, address generation, caches, scheduling, and broad operator support consume area and energy that a narrower design may redirect.
+- **GPU efficiency is conditional.** Work must supply sufficient parallelism, regularity, locality, residency, and amortization under the deployment objective.
+- **The economic answer changes with scale.** Hyperscalers can amortize custom silicon and software across enormous volume. Mobile vendors can amortize a small accelerator across many devices and convert energy savings into battery life or features. An enterprise with modest, changing demand may rationally prefer a less efficient GPU because its software compatibility and reuse reduce total risk.
 
 This formulation also explains specialization inside GPUs. Matrix units, media engines, copy engines, compression, and collective support remove recurring costs while retaining the larger platform. External accelerators make a stronger trade: they may change execution, memory, numerical, or scheduling contracts more substantially.
 
@@ -443,7 +443,7 @@ In this middle band, silicon efficiency decides outcomes less often than softwar
 
 Chapter 6 can now be given a precise assignment rather than a general one. Architecture families that attack the structural non-absorbables—always-on NPUs, deterministic pipelines, near-sensor engines, microNPUs—earn their place by contract change and are secure against GPU evolution. Families that attack the contested middle must demonstrate, workload by workload, that the necessity test's fourth condition holds against a moving target. Any family that attacks an absorbed bound is competing with the GPU's strongest ground and carries the burden of explaining why its advantage survives the platform's next generation.
 
-[**Figure 5.5 (draft produced) — Partition of residual bounds by absorbability.** File: `figures/fig05-05-absorption-partition.svg` (also `.png`). Three columns: absorbed into the GPU platform (with shipped mechanism named per bound), structurally outside the throughput contract (with the contract obstacle named), and contested middle (with both competing responses named). Draw arrows from each Chapter 2 residual bound into its column. Annotate the contested column with the §2.14 condition-4 criterion that decides it.]
+![**Figure 5.5 — Partition of residual bounds by absorbability.** Three columns: absorbed into the GPU platform (with shipped mechanism named per bound), structurally outside the throughput contract (with the contract obstacle named), and contested middle (with both competing responses named). Arrows run from each Chapter 2 residual bound into its column. The contested column is annotated with the §2.14 condition-4 criterion that decides it.](figures/fig05-05-absorption-partition.png)
 
 ## 5.12 CPUs and GPUs Across the Compute Continuum
 
