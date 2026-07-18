@@ -227,15 +227,16 @@ motivate Chapter 6.
 
 ## Chapter 6. Domain-Specific AI Accelerators Across the Compute Continuum (Cornerstone Chapter)
 
-Architectural families:
+Architectural families (taxonomy updated 2026-07-17 with the Chapter 6 draft; presented as microarchitectural organizations per Charter §13):
 
+-   Systolic arrays (mechanism family; presented before the device classes built on it)
 -   Tensor processors
--   Systolic arrays
--   NPUs
+-   Deterministic dataflow and tile processors (added; Groq/SambaNova/Tenstorrent class)
+-   NPUs, including microNPU and near-sensor engines
 -   FPGA and reconfigurable computing
 -   Wafer-scale computing
--   Memory-centric architectures
--   Neuromorphic overview
+-   Memory-centric architectures and processing-in-memory
+-   Neuromorphic overview (forward-looking)
 
 For each:
 

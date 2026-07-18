@@ -479,7 +479,7 @@ Chapter 6 can therefore be approached through explicit questions:
 - How does the answer change among hyperscale, enterprise, mobile, and embedded deployment?
 - Under what workload volume and lifecycle economics does the design outperform continued CPU or GPU optimization?
 
-These questions prevent Chapter 6 from becoming a list of devices. Tensor processors, systolic designs, NPUs, reconfigurable fabrics, wafer-scale systems, memory-centric architectures, and neuromorphic approaches should be compared as different answers to the contracts and stressors established in Chapters 2 through 5.
+These questions prevent Chapter 6 from becoming a list of devices. Systolic arrays, tensor processors, deterministic dataflow and tile processors, NPUs, reconfigurable fabrics, wafer-scale systems, memory-centric architectures, and neuromorphic approaches should be compared as different answers to the contracts and stressors established in Chapters 2 through 5.
 
 ## 5.14 Engineering Takeaways
 
