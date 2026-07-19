@@ -31,7 +31,13 @@ Software pushed this architecture far. Before offloading work, engineers commonl
 
 Processor execution capability and main-memory latency did not improve at the same rate. Wulf and McKee described this divergence as the “memory wall” in 1995: faster processors could spend an increasing fraction of time waiting for data unless locality and memory-system behavior improved. Cache hierarchies, prefetching, wider interfaces, NUMA organizations, and sophisticated memory controllers mitigated the problem but did not abolish it. They transformed the question from raw DRAM latency into a hierarchy problem: which data is resident at which level, how often it is reused, and how much movement is required per unit of useful work.
 
-“Memory-bound” is consequently not one diagnosis. A workload may be limited by DRAM bandwidth, cache capacity, cache-line overfetch, address translation, coherence traffic, NUMA placement, irregular access that defeats prefetching, or insufficient memory-level parallelism. The dominant level can also change with tensor shape, batch size, or request concurrency. The Roofline model later provided a useful high-level formulation: attainable arithmetic throughput is bounded by both peak compute and memory bandwidth multiplied by operational intensity. This survey uses that intuition without treating it as a complete model of AI execution.
+“Memory-bound” is consequently not one diagnosis. A workload may be limited by DRAM bandwidth, cache capacity, cache-line overfetch, address translation, coherence traffic, NUMA placement, irregular access that defeats prefetching, or insufficient memory-level parallelism. The dominant level can also change with tensor shape, batch size, or request concurrency. The Roofline model later provided a useful high-level formulation: attainable arithmetic throughput is
+
+\[
+P_{\mathrm{attainable}}=\min\!\left(P_{\mathrm{peak}}, I\beta\right),
+\]
+
+where \(I\) is operational intensity in useful operations per byte transferred and \(\beta\) is sustained memory bandwidth in bytes per second. The model therefore bounds performance by both peak compute and the rate at which the relevant memory boundary can supply useful operands. This survey uses that intuition without treating it as a complete model of AI execution.
 
 ### The power wall and multicore scaling
 
