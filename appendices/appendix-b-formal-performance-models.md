@@ -390,4 +390,4 @@ Before applying any model:
 9. Re-run the analysis after each optimization because the bottleneck may move.
 10. Treat unexplained distance from a bound as a measurement question, not proof that the model is wrong or that new hardware is required.
 
-The models in this appendix are most useful when they falsify a proposed explanation early. A Roofline bound can show that more tensor throughput cannot repair weight streaming; a queueing model can show that a faster device cannot create batchable demand; and the necessity inequality can show that a real silicon advantage still fails economically.
+The models in this appendix are most useful when they test a proposed explanation against measured constraints and reject it early when the explanation is inconsistent with those constraints. A Roofline bound can show that more tensor throughput cannot repair weight streaming; a queueing model can show that a faster device cannot create batchable demand; and the necessity inequality can show that a real silicon advantage still fails economically.

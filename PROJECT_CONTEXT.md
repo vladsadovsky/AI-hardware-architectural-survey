@@ -165,7 +165,7 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 - `chapters/ch07-enterprise-accelerator-landscape.md` — Chapter 7 draft awaiting review; architecture-organized mid-2026 snapshot (GPU incumbents, hyperscaler tensor processors, challenger consolidation), comparison template Table 7.1, evidence-classed and snapshot-dated
 - `chapters/ch08-client-edge-ai-landscape.md` — Chapter 8 draft awaiting review; AI PCs, mobile SoCs, embedded/microNPU, robotics, automotive, and the enterprise relationship, with synthesis Table 8.1
 - `discussions/questions_for_author_2026-07-17.md` — running list of decisions needing author confirmation and facts needing an author verification pass
-- `appendices/appendix-g-economic-primer.md` — approved future-work placeholder for a plain-language datacenter and mobile acceleration-economics primer; designed after Chapter 6 and finalized after Chapter 10
+- `appendices/appendix-g-economic-primer.md` — rewritten datacenter and mobile acceleration-economics primer draft awaiting review; applies one incremental lifecycle model to parallel worked examples and ends with an architect-to-business checklist and explicit learning summary
 - `discussions/review_ch1-5_toplevel_2026-07-17.md` — critical review of the first five chapters; its six priority recommendations were implemented on 2026-07-17 (quantitative evidence layer, executed necessity test in §2.14, forward glossary and running example in Chapter 2, canonical-home deduplication, Chapter 3/4 boundary sharpening, GPU-absorption partition in §5.11, trimmed takeaways, revised preface)
 - `figures/` — three draft figures produced 2026-07-17: `fig02-04-decode-bandwidth-bound` (worked decode roofline and token-ceiling chart), `fig02-07-necessity-test` (decision-structure flowchart), `fig05-05-absorption-partition` (three-way partition of residual bounds); remaining figures are placeholders
 - `references/references.md` — consolidated paper-level reference list, organized by chapter and intended for placement at the end of the assembled paper
@@ -180,7 +180,7 @@ Workload analysis must explicitly connect real-world problem, workload behavior,
 - Review Chapter 3 for conceptual depth, terminology, separation of architectural abstraction levels, and continuity from the Chapter 2 workload taxonomy.
 - Review Chapter 4 for complete causal chains, treatment of interacting tradeoffs, compute-continuum coverage, and an appropriately gradual lead-in to Chapters 5 and 6.
 - Review Chapter 5 for CPU/GPU balance, accuracy of the platform-level CUDA treatment, economic framing of further specialization, and readiness of its questions to structure Chapter 6.
-- Develop Appendix G after Chapter 6 and finalize it after Chapter 10, preserving its initial datacenter/mobile scope and its distinction among technical feasibility, operational benefit, and economic justification.
+- Review Appendix G for clarity of its shared lifecycle model, validity of its hypothetical break-even examples, datacenter/mobile symmetry, and usefulness in architect-to-business discussions; retain its distinction among technical feasibility, operational benefit, and economic justification.
 - Review the Preface for consistency and completeness if later manuscript work expands or changes relevant content.
 - Develop later chapters only after the current drafts are reviewed.
 - Create figures, tables, references, and presentation-extraction material as manuscript work produces them; do not let companion artifacts drive manuscript structure.

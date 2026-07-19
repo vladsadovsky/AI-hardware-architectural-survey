@@ -428,37 +428,38 @@ F. Annotated Bibliography
 
 G. Economic Primer: When AI Acceleration Pays
 
--   Purpose: prepare system and AI architects to discuss acceleration
-    decisions with business, finance, product, and infrastructure decision
-    makers
+-   Reader expectations and learning objectives
+    -   Translate technical bounds into lifecycle cost or enabled value
+    -   Calculate and challenge break-even conditions
+    -   Present positive and negative specialization results to technical and
+        business decision makers
 -   Initial scope
     -   Hyperscale and datacenter AI services
     -   Mobile AI devices and platforms
     -   Desktop, workstation, non-mobile edge, and embedded economics deferred
--   Terminology guardrails
-    -   Latency affects service value, batching freedom, capacity, and SLOs;
-        it is not itself OPEX
-    -   Battery life affects product utility, thermal and component design,
-        feature feasibility, and customer value; it is not itself OPEX
-    -   Distinguish technically possible, operationally beneficial, and
-        economically justified
--   Common lifecycle model
-    -   Acquisition, design and licensing, software enablement, operations,
-        capacity, reliability, flexibility, support, and risk
-    -   Fixed specialization cost compared with cumulative recurring savings
-        and enabled product or service value
--   Datacenter sensitivity analysis
+-   Decision definition
+    -   Best credible baseline and complete candidate
+    -   Common useful-result boundary, objective, time horizon, and volume
+-   Shared incremental lifecycle model
+    -   Recurring savings and enabled value
+    -   Transition cost, flexibility surrendered, and risk
+    -   Fixed and recurring terms, present value, simple break-even, and
+        limits of payback
+-   Translation of technical metrics into economic consequences
+    -   Latency, utilization, energy and power, battery life, and flexibility
+-   Datacenter application using the common model
     -   Cost per useful token, request, training run, or quality target
-    -   Useful utilization, latency, capacity headroom, energy, cooling,
-        memory, networking, goodput, and recovery
-    -   Hyperscale amortization versus smaller private infrastructure
--   Mobile sensitivity analysis
-    -   Silicon area, NRE amortization, shipment volume, memory and package
-        cost, energy, wake scope, battery, thermals, and feature value
-    -   Local execution, avoided cloud cost, privacy, offline operation,
-        software support, and model-change risk
--   Representative datacenter and mobile break-even examples
+    -   Useful utilization, latency, capacity, energy, communication, goodput,
+        and recovery
+    -   Hypothetical payback and utilization sensitivities
+-   Mobile application using the same model
+    -   Silicon area, NRE, shipment volume, memory and package cost, coverage,
+        wake scope, battery, thermals, and product value
+    -   Hypothetical per-device and shipment-volume break-even sensitivities
+-   Direct comparison of datacenter and mobile decision variables
+-   Uncertainty, downside/base/upside cases, and avoidance of false precision
 -   Architect-to-business decision checklist
+-   Explicit summary of the seven principles readers should retain
 
 ------------------------------------------------------------------------
 
